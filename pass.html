@@ -1,124 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>My Pass | Smart Sarthi</title>
   <link rel="stylesheet" href="pass.css">
 </head>
-
 <body>
   <div class="container">
     <aside class="sidebar">
       <div class="logo">Smart Sarthi</div>
       <nav class="nav">
         <a href="user_dashboard.html">Dashboard</a>
-        <a href="pass.html">My Pass</a>
-        <a href="#" class="active">Settings</a>
+        <a href="pass.html" class="active">My Pass</a>
+        <a href="#">Settings</a>
       </nav>
-      <button class="back-button">Log Out</button>
+      <button class="logout-button">Log Out</button>
     </aside>
 
     <main class="main-content">
       <header class="top-bar">
         <div></div>
-        <div class="user-profile" id="user-name">User Profile</div>
+        <div class="user-profile" id="user-name">Loading...</div>
       </header>
 
       <section class="pass-section">
         <div class="pass-card">
           <h3>Pass Validity</h3>
-          <p class="pass-id" id="pass-id">PASSXXXXXXX</p>
-
+          <p class="pass-id" id="pass-id">Loading...</p>
           <p>Start Date: <strong id="start-date">YYYY-MM-DD</strong></p>
           <p>Expiry Date: <strong id="expiry-date">YYYY-MM-DD</strong></p>
-
           <p>From: <strong id="start-location">Start Location</strong></p>
           <p>To: <strong id="end-location">End Location</strong></p>
-
           <div class="progress-bar">
             <div class="progress" id="progress-bar" style="width: 0%"></div>
           </div>
-
           <p><strong id="days-remaining">--</strong> remaining</p>
           <button class="renew-btn">Renew Pass</button>
+          <button class="renew-btn">Renew Pass</button>
+          <button class="delete-btn" id="delete-pass-btn">Delete Pass</button>
         </div>
-
+        
         <div class="notifications" id="notification-section">
           <h3>Notifications</h3>
-
-          <div class="notification warning" id="notif-1">
-            <strong>Pass Expiry Warning</strong>
-            <p>Your pass is expiring soon.</p>
+          <div class="notification info">
+            <strong>Welcome!</strong>
+            <p>Your pass details are shown here.</p>
           </div>
-
-          </div>
+        </div>
       </section>
 
-      <section class="payments">
-        <h3>Payment Details</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Transaction ID</th>
-              <th>Date</th>
-              <th>Description</th>
-              <th>Amount</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="payment-table-body">
-            <tr>
-              <td>TXNXXX</td>
-              <td>YYYY-MM-DD</td>
-              <td>Description goes here</td>
-              <td>₹0</td>
-              <td><span class="status completed">completed</span></td>
-              <td><a href="#" class="view-link">View Receipt</a></td>
-            </tr>
-            </tbody>
-        </table>
-        <button class="payment-btn">Make New Payment</button>
-      </section>
-      <section class="bus-search">
-        <h3>Find a Bus</h3>
-        <form onsubmit="searchBus(event)">
-          <input id="fromInput" type="text" placeholder="From" required>
-          <input id="toInput" type="text" placeholder="To" required>
-          <button type="submit">Find Bus</button>
-        </form>
-
-        <div id="results"></div>
+      <section class="calendar-section">
+        <h3>Usage Calendar</h3>
+        <div id="usage-calendar" class="calendar-grid">
+          </div>
       </section>
     </main>
   </div>
-  <script>
-  async function searchBus(event) {
-    event.preventDefault();
-
-    const from = document.getElementById("fromInput").value;
-    const to = document.getElementById("toInput").value;
-
-    const response = await fetch("http://localhost:5000/api/findBus", { 
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to })
-    });
-
-    const data = await response.json();
-
-    let output = document.getElementById("results");
-    output.innerHTML = "";
-    if (data.results.length === 0) {
-      output.innerHTML = "<p>No buses found</p>";
-    } else {
-      data.results.forEach(bus => {
-        output.innerHTML += `<p>${bus.bus} (${bus.from} → ${bus.to}) at ${bus.time}</p>`;
-      });
-    }
-  }
-</script>
+  
+  <script src="auth.js" type="module"></script>
+  <script src="pass.js" type="module"></script>
 </body>
 </html>

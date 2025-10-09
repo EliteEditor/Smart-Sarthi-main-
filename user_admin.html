@@ -8,32 +8,29 @@
 </head>
 <body>
   <div class="container">
-    <!-- Sidebar -->
     <aside class="sidebar">
       <h2 class="logo">Smart Sarthi</h2>
       <nav>
         <ul>
           <li><a href="admin_dashboard.html">Dashboard</a></li>
-         
           <li><a href="admin_bus.html">Buses & Staff</a></li>
           <li><a href="user_admin.html">Users</a></li>
+          
           <li><a href="#">Notifications</a></li>
           <li><a href="#">Settings</a></li>
+        </ul>
       </nav>
+      <button class="logout-button">Log Out</button>
     </aside>
 
-    <!-- Main content -->
     <main class="main-content">
-      <!-- Top Bar -->
       <header class="topbar">
-        
         <div class="user-info">
           <span class="user-name">Admin User</span>
           <span class="user-role">Administrator</span>
         </div>
       </header>
 
-      <!-- User Management Section -->
       <section class="section">
         <div class="section-header">
           <div>
@@ -56,14 +53,15 @@
               </tr>
             </thead>
             <tbody id="user-table-body">
-              <!-- Populated by backend -->
-            </tbody>
+              </tbody>
           </table>
         </div>
       </section>
     </main>
   </div>
 
-  
+  <script src="auth.js" type="module"></script>
+  <script src="user_admin.js" defer></script>
+
 </body>
 </html>

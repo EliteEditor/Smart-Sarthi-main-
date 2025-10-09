@@ -1,7 +1,8 @@
 // register.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-analytics.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+// --- Step 1: Import updateProfile ---
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCcH0GYFUfsl0z2Uv5rgBLvBZhWs3IKepk",
@@ -34,16 +35,14 @@ document.addEventListener('DOMContentLoaded', () => {
   signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    // --- Step 2: Get the full name from the form ---
+    const fullName = document.getElementById('fullname').value.trim();
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
 
-    if (!email) {
-      alert('Please enter email');
-      return;
-    }
-    if (!password) {
-      alert('Please enter password');
+    if (!fullName) {
+      alert('Please enter your full name');
       return;
     }
     if (password !== confirmPassword) {
@@ -52,13 +51,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
+      // First, create the user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      alert('Signup successful: ' + user.email);
+      
+      // --- Step 3: Update the user's profile with the name ---
+      // This adds the "displayName" to the user's account
+      await updateProfile(userCredential.user, {
+        displayName: fullName
+      });
+
+      alert('Signup successful: ' + userCredential.user.email);
       signupForm.reset();
       window.location.href = 'user_dashboard.html';
-      // optionally redirect to login or dashboard
-      // window.location.href = 'login.html';
+
     } catch (error) {
       console.error('Error during signup:', error);
       alert('Error: ' + error.message);

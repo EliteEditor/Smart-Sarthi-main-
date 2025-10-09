@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const API_URL = 'http://localhost:5000/api/routes';
 
@@ -128,19 +127,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial fetch of routes when the page loads
     fetchRoutes();
-    // Find the button with class="back-button" and make it functional.
-    const logoutBtn = document.querySelector('.logout-button'); 
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', async () => {
-            if (confirm("Are you sure you want to log out?")) {
-                try {
-                    await signOut(auth);
-                    window.location.href = "login.html";
-                } catch (error) {
-                    console.error("Logout Error:", error);
-                    alert("Error logging out: " + error.message);
-                }
-            }
-        });
-    }
 });

@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Smart Sarthi Dashboard</title>
     <link rel="stylesheet" href="user.css">
+    <style>
+        /* Add some styles for the new inputs */
+        .purchase-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+    </style>
 </head>
 <body>
     <div class="container">
         <aside class="sidebar">
-            
             <div class="logo">Smart Sarthi</div>
             <nav class="nav">
-                <a href="user_dashboard.html">Dashboard</a>
+                <a href="user_dashboard.html" class="active">Dashboard</a>
                 <a href="pass.html">My Pass</a>
-                
-                <a href="#" class="active">Settings</a>
+                <a href="#">Settings</a>
             </nav>
             <button class="logout-button">Log Out</button>
         </aside>
@@ -28,60 +30,32 @@
 
             <section class="dashboard">
                 <h2>Dashboard</h2>
-                <p class="subheading">Manage your bus pass and travel history</p>
+                <p class="subheading">Purchase a new pass or manage your travel</p>
 
                 <div class="journey-box">
-                    <h3>Journey Details</h3>
-                    <input type="text" placeholder="Enter starting point" />
-                    <input type="text" placeholder="Enter destination" />
-                    <input type="date" />
-                    <button class="plan-btn">Plan Journey</button>
-                </div>
+                    <h3>Purchase a New Pass</h3>
+                    <p>Select your route, validity, and start date.</p>
+                    
+                    <select id="route-select" required>
+                      <option value="">-- Select a Route --</option>
+                    </select>
 
-                <div class="upcoming-journeys">
-                    <h4>Upcoming Journeys</h4>
-                    <div class="journey-card">
-                        <p><strong>Central Station → Tech Park</strong></p>
-                        <p>2024-09-30 at 09:15 AM</p>
-                        <p>Bus: BUS-245</p>
-                        <span class="tag upcoming">upcoming</span>
+                    <div class="purchase-options">
+                        <select id="pass-type-select" required>
+                            <option value="monthly">Monthly (30 Days)</option>
+                            <option value="quarterly">Quarterly (90 Days)</option>
+                        </select>
+                        <input type="date" id="start-date-select" required>
                     </div>
+
+                    <button class="plan-btn" id="purchase-pass-btn">Purchase Pass</button>
+                    <div id="purchase-message" style="margin-top: 10px; font-weight: 500;"></div>
                 </div>
             </section>
-
-            
         </main>
     </div>
     
-<!-- ✅ Firebase logout logic -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCcH0GYFUfsl0z2Uv5rgBLvBZhWs3IKepk",
-  authDomain: "login-5ed74.firebaseapp.com",
-  projectId: "login-5ed74",
-  storageBucket: "login-5ed74.firebasestorage.app",
-  messagingSenderId: "751070431911",
-  appId: "1:751070431911:web:3783cd10afde4ae9152982",
-  measurementId: "G-7RNWGFMMNK"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-document.getElementById(".logout-button").addEventListener("click", async () => {
-  try {
-    await signOut(auth);
-    alert("You have been logged out.");
-    window.location.href = "login.html";
-  } catch (error) {
-    console.error("Logout error:", error);
-    alert("Error logging out: " + error.message);
-  }
-});
-</script>
-<script type="module" src="auth.js"></script>
+    <script src="auth.js" type="module"></script>
+    <script src="user_dashboard.js" type="module"></script>
 </body>
 </html>

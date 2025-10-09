@@ -182,3 +182,62 @@
       border-radius: 6px;
       cursor: pointer;
     }
+ /* --- UPDATED COMPACT CALENDAR STYLES --- */
+.calendar-section {
+  background-color: #fff;
+  padding: 20px;
+  margin-top: 30px;
+  border-radius: 10px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px; /* Reduced from 8px */
+  margin-top: 15px;
+  max-width: 400px; /* Optional: constrain width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.calendar-header {
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.calendar-day {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 34px; /* Reduced from 40px */
+  border-radius: 50%;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.calendar-day.used {
+  background-color: #dcfce7; /* Light green */
+  color: #166534; /* Dark green */
+}
+
+.calendar-day.not-used {
+  background-color: #fee2e2; /* Light red */
+  color: #991b1b; /* Dark red */
+}
+
+.calendar-day.future {
+  background-color: #f3f4f6; /* Light gray */
+  color: #9ca3af; /* Dark gray */
+}
+.delete-btn {
+  background-color: #ef4444; /* Red */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 10px;
+}
