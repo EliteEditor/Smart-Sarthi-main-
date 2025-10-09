@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Route Management</title>
+  <link rel="stylesheet" href="admin.css">
+  <style>
+    /* Basic Modal Styles */
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+    .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border-radius: 8px; width: 80%; max-width: 500px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    .modal-header { background-color:rgb(10, 10, 241) flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .close-btn { color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
+    .close-btn:hover { color: #000; }
+    .modal-form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+    .modal-form input { padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+    .modal-form .form-actions { text-align: right; }
+    .modal-form button { padding: 10px 15px; border-radius: 5px; border: none; color: white; cursor: pointer; }
+    .save-btn { background-color: #2563eb; }
+    .cancel-btn { background-color: #6b7280; margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2 class="logo">Smart Sarthi</h2>
+      <nav class="nav">
+        <ul>
+          <li><a href="admin_dashboard.html">Dashboard</a></li>
+          <li><a href="admin_bus.html">Buses & Staff</a></li>
+          <li><a href="user_admin.html">Users</a></li>
+          <li><a href="#">Notifications</a></li>
+          <li><a href="#">Settings</a></li>
+        </ul>
+      </nav>
+      <button class="logout-button">Log Out</button>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="user-info">
+          <span class="user-name">Admin User</span>
+          <span class="user-role">Administrator</span>
+        </div>
+      </header>
+
+      <section class="section">
+        <div class="section-header">
+          <div>
+            <h1>Route Management</h1>
+            <p>Manage all bus routes and their operational status</p>
+          </div>
+          <button class="add-btn" id="add-route-btn">+ Add New Route</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>From</th>
+                <th>To</th>
+                <th>Distance</th>
+                <th>Duration</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="route-table-body">
+              <!-- Route data will be populated here by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Add/Edit Route Modal -->
+  <div id="route-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">Add New Route</h2>
+        <span class="close-btn">&times;</span>
+      </div>
+      <form id="route-form" class="modal-form">
+        <input type="hidden" id="route-id">
+        <input type="text" id="from-location" placeholder="From Location" required>
+        <input type="text" id="to-location" placeholder="To Location" required>
+        <input type="text" id="distance" placeholder="Distance (e.g., 12 km)" required>
+        <input type="text" id="duration" placeholder="Duration (e.g., 45 mins)" required>
+        <div class="form-actions">
+          <button type="submit" class="save-btn">Save Route</button>
+          <button type="button" class="cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <script src="admin_dashboard.js"></script>
+</body>
+</html>

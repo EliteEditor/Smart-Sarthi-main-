@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Smart Sarthi Dashboard</title>
+    <link rel="stylesheet" href="user.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            
+            <div class="logo">Smart Sarthi</div>
+            <nav class="nav">
+                <a href="user_dashboard.html">Dashboard</a>
+                <a href="pass.html">My Pass</a>
+                
+                <a href="#" class="active">Settings</a>
+            </nav>
+            <button class="logout-button">Log Out</button>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div></div>
+                <div class="user-profile">User Profile</div>
+            </header>
+
+            <section class="dashboard">
+                <h2>Dashboard</h2>
+                <p class="subheading">Manage your bus pass and travel history</p>
+
+                <div class="journey-box">
+                    <h3>Journey Details</h3>
+                    <input type="text" placeholder="Enter starting point" />
+                    <input type="text" placeholder="Enter destination" />
+                    <input type="date" />
+                    <button class="plan-btn">Plan Journey</button>
+                </div>
+
+                <div class="upcoming-journeys">
+                    <h4>Upcoming Journeys</h4>
+                    <div class="journey-card">
+                        <p><strong>Central Station → Tech Park</strong></p>
+                        <p>2024-09-30 at 09:15 AM</p>
+                        <p>Bus: BUS-245</p>
+                        <span class="tag upcoming">upcoming</span>
+                    </div>
+                </div>
+            </section>
+
+            
+        </main>
+    </div>
+    
+<!-- ✅ Firebase logout logic -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCcH0GYFUfsl0z2Uv5rgBLvBZhWs3IKepk",
+  authDomain: "login-5ed74.firebaseapp.com",
+  projectId: "login-5ed74",
+  storageBucket: "login-5ed74.firebasestorage.app",
+  messagingSenderId: "751070431911",
+  appId: "1:751070431911:web:3783cd10afde4ae9152982",
+  measurementId: "G-7RNWGFMMNK"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+document.getElementById(".logout-button").addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    alert("You have been logged out.");
+    window.location.href = "login.html";
+  } catch (error) {
+    console.error("Logout error:", error);
+    alert("Error logging out: " + error.message);
+  }
+});
+</script>
+<script type="module" src="auth.js"></script>
+</body>
+</html>

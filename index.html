@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smarth Sarthi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <section>
+            <div class="top">
+        <span>📞 Emergency: 108</span>
+        <span>Helpline: 1800-XXX-XXXX</span>
+       </div>
+        <div class="top">
+            🌟 Real-time tracking available
+        </div>
+        </section>
+        <section>
+            <div class="topbar">
+            <div>
+                <span><img height="80" src="logo.png" alt="logo" >SMART SARTHI</span>
+            </div>
+            <div>
+                <a href="">Route Map</a>
+                <a href="">Timetable</a>
+                <a href="">Live Track</a>
+                <a href="">Book Now</a>
+            </div>
+            <div>
+                <select>
+                    <option>English</option>
+                    <option>Marathi</option>
+                    <option>Hindi</option>
+                </select>
+                <button><a href="login.html">Log In</a></button>
+            </div>
+            </div>
+        </section>
+    </header>
+    <main>
+        <section>
+           <h1><big>Welcome to <span class="gradient-text">Smart Sarthi</span></big></h1>
+
+            <pre>Intelligent, safe, and convenient public transportation for everyone. 
+            Plan your journey, book tickets, and travel with smart technology.
+            </pre>
+            <div class="features">
+                <span class="green" >Real-Time Tracking</span>
+                <span class="blue">Digital payement</span>
+                <span class="violet">Al Powered Routes</span>
+            </div>
+        </section>
+        <section>
+            <!-- Ensure the form has this exact ID -->
+            <form id="journey-planner-form">
+                <div class="planner">
+                    <b>Smart Journey Planner</b>
+                    <p>Plan your smart route with real time information</p>
+                </div>
+                <div class="inner-planner">
+                    <!-- Ensure the inputs have these exact IDs -->
+                    <input id="from-location" type="text" placeholder="Enter pickup location" required>
+                    <input id="to-location" type="text" placeholder="Enter destination" required>
+                    <input id="journey-date" type="date" required>
+                    <!-- <input id="journey-time" type="time"> -->
+                    <button type="submit" class="find-btn">🔍 Find Routes</button>
+                </div>
+            </form>
+            <!-- This container is where the results will be displayed -->
+            <div id="bus-results"></div>
+        </section>
+    </main>
+    <footer>
+
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
