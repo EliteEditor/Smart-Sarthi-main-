@@ -3,23 +3,33 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-const apiRoutes = require('./routes/api');
+// --- FIREBASE ADMIN INITIALIZATION ---
+const admin = require('firebase-admin');
+const serviceAccount = require('./serviceAccountKey.json'); 
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+// ------------------------------------
+
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Database Connection
+// MongoDB Connection
+// Make sure your .env file has a MONGO_URI variable
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ Successfully connected to MongoDB'))
   .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // API Routes
+const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
 
 // Start the Server
-const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
+  console.log(`console.log('--- THE NEW CODE IS RUNNING NOW ---');`);
 });

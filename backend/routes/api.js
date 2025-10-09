@@ -1,135 +1,102 @@
 const express = require('express');
 const router = express.Router();
 const Bus = require('../models/Bus');
-const Route = require('../models/Route');
+const Route = require('../models/Route'); 
+const admin = require('firebase-admin');
 
-// --- Bus Finder Endpoint (for public-facing journey planner) ---
+// --- Bus Finder Endpoint ---
 router.post('/findBus', async (req, res) => {
   try {
     const { from, to } = req.body;
-    if (!from || !to) {
-      return res.status(400).json({ message: 'Origin (from) and destination (to) are required.' });
-    }
-    const route = await Route.findOne({
-      from: new RegExp(`^${from}$`, 'i'),
-      to: new RegExp(`^${to}$`, 'i')
-    });
-    if (!route) {
-      return res.json({ results: [] });
-    }
+    const route = await Route.findOne({ from: new RegExp(`^${from}$`, 'i'), to: new RegExp(`^${to}$`, 'i') });
+    if (!route) return res.json({ results: [] });
     const buses = await Bus.find({ route: route._id }).populate('route');
-    const formattedResults = buses.map(bus => ({
-        bus: bus.busNumber,
-        from: bus.route.from,
-        to: bus.route.to,
-        time: bus.departureTime
-    }));
-    res.json({ results: formattedResults });
-  } catch (error) {
-    console.error('Error in /findBus route:', error);
-    res.status(500).json({ message: 'An internal server error occurred.' });
-  }
+    const results = buses.map(bus => ({ bus: bus.busNumber, from: bus.route.from, to: bus.route.to, time: bus.departureTime }));
+    res.json({ results });
+  } catch (error) { res.status(500).json({ message: 'Server error' }); }
 });
 
-
-// --- Admin Panel: Route Management CRUD Endpoints ---
+// --- Routes for Route Management ---
 router.get('/routes', async (req, res) => {
-    try {
-        const routes = await Route.find({});
-        res.json(routes);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching routes.' });
-    }
-});
-router.get('/routes/:id', async (req, res) => {
-    try {
-        const route = await Route.findById(req.params.id);
-        if (!route) {
-            return res.status(404).json({ message: 'Route not found.' });
-        }
-        res.json(route);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching single route.' });
-    }
+  try { const routes = await Route.find(); res.json(routes); }
+  catch (err) { res.status(500).json({ message: err.message }); }
 });
 router.post('/routes', async (req, res) => {
-    try {
-        const newRoute = new Route(req.body);
-        await newRoute.save();
-        res.status(201).json(newRoute);
-    } catch (error) {
-        res.status(400).json({ message: 'Error creating route.', error });
-    }
+  const route = new Route(req.body);
+  try { const newRoute = await route.save(); res.status(201).json(newRoute); }
+  catch (err) { res.status(400).json({ message: err.message }); }
 });
 router.put('/routes/:id', async (req, res) => {
-    try {
-        const updatedRoute = await Route.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!updatedRoute) {
-            return res.status(404).json({ message: 'Route not found.' });
-        }
-        res.json(updatedRoute);
-    } catch (error) {
-        res.status(400).json({ message: 'Error updating route.', error });
-    }
+  try { const updatedRoute = await Route.findByIdAndUpdate(req.params.id, req.body, { new: true }); res.json(updatedRoute); }
+  catch (err) { res.status(400).json({ message: err.message }); }
 });
 router.delete('/routes/:id', async (req, res) => {
-    try {
-        const deletedRoute = await Route.findByIdAndDelete(req.params.id);
-        if (!deletedRoute) {
-            return res.status(404).json({ message: 'Route not found.' });
-        }
-        res.json({ message: 'Route deleted successfully.' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error deleting route.', error });
-    }
+  try { await Route.findByIdAndDelete(req.params.id); res.json({ message: 'Route deleted' }); }
+  catch (err) { res.status(500).json({ message: err.message }); }
 });
 
-
-// --- NEW: Admin Bus Management Endpoints ---
-
-// GET /api/buses - Fetch all buses
+// --- Routes for Bus Management ---
 router.get('/buses', async (req, res) => {
-    try {
-        // .populate('route') replaces the route ID with the full route document
-        const buses = await Bus.find({}).populate('route');
-        res.json(buses);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching buses.' });
-    }
+  try { const buses = await Bus.find().populate('route'); res.json(buses); }
+  catch (err) { res.status(500).json({ message: err.message }); }
 });
-
-// POST /api/buses - Create a new bus
 router.post('/buses', async (req, res) => {
-    try {
-        const newBus = new Bus(req.body);
-        await newBus.save();
-        res.status(201).json(newBus);
-    } catch (error) {
-        res.status(400).json({ message: 'Error creating bus.', error });
-    }
+  const bus = new Bus(req.body);
+  try { const newBus = await bus.save(); res.status(201).json(newBus); }
+  catch (err) { res.status(400).json({ message: err.message }); }
 });
-
-// PUT /api/buses/:id - Update a bus
 router.put('/buses/:id', async (req, res) => {
-    try {
-        const updatedBus = await Bus.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!updatedBus) return res.status(404).json({ message: 'Bus not found.' });
-        res.json(updatedBus);
-    } catch (error) {
-        res.status(400).json({ message: 'Error updating bus.', error });
-    }
+  try { const updatedBus = await Bus.findByIdAndUpdate(req.params.id, req.body, { new: true }); res.json(updatedBus); }
+  catch (err) { res.status(400).json({ message: err.message }); }
 });
-
-// DELETE /api/buses/:id - Delete a bus
 router.delete('/buses/:id', async (req, res) => {
+  try { await Bus.findByIdAndDelete(req.params.id); res.json({ message: 'Bus deleted' }); }
+  catch (err) { res.status(500).json({ message: err.message }); }
+});
+
+// --- Route for Fetching Users ---
+router.get('/users', async (req, res) => {
     try {
-        const deletedBus = await Bus.findByIdAndDelete(req.params.id);
-        if (!deletedBus) return res.status(404).json({ message: 'Bus not found.' });
-        res.json({ message: 'Bus deleted successfully.' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error deleting bus.', error });
+        const listUsersResult = await admin.auth().listUsers();
+        const users = listUsersResult.users.map(userRecord => ({
+            uid: userRecord.uid,
+            email: userRecord.email,
+            displayName: userRecord.displayName || userRecord.email,
+            createdAt: new Date(userRecord.metadata.creationTime).toLocaleDateString(),
+            lastSignInTime: new Date(userRecord.metadata.lastSignInTime).toLocaleDateString()
+        }));
+        res.json(users);
+    } catch (error) { 
+        console.error('Error listing users:', error);
+        res.status(500).json({ message: 'Error retrieving users', error: error.message });
     }
 });
 
+// --- ADD THIS BLOCK FOR UPDATING AND DELETING USERS ---
+// Route to UPDATE a user's details (e.g., displayName)
+router.put('/users/:uid', async (req, res) => {
+    const { uid } = req.params;
+    const { displayName } = req.body;
+    try {
+        await admin.auth().updateUser(uid, { displayName });
+        res.json({ message: 'User updated successfully.' });
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ message: 'Error updating user', error: error.message });
+    }
+});
+
+// Route to DELETE a user
+router.delete('/users/:uid', async (req, res) => {
+    const { uid } = req.params;
+    try {
+        await admin.auth().deleteUser(uid);
+        res.json({ message: 'User deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Error deleting user', error: error.message });
+    }
+});
+// ---------------------------------------------------------
 
 module.exports = router;
