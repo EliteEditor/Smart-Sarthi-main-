@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
-
+const cors =require('cors'); // <-- 1. Import the package
+const path = require('path');
+const app = express();
+app.use(cors());
 // Import all necessary models at the top
 const Bus = require('../models/Bus');
 const Route = require('../models/Route');
@@ -239,5 +242,5 @@ router.post('/passes/usage', async (req, res) => {
         res.status(500).json({ message: 'Server error during check-in.' });
     }
 });
-
+app.use(express.json());
 module.exports = router;
