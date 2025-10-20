@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 
 // Import all necessary models at the top
 const Bus = require('../models/Bus');
-const Route = require('../models/Route'); // FIX WAS HERE
+const Route = require('../models/Route');
 const Pass = require('../models/Pass');
 const UsageRecord = require('../models/UsageRecord');
 
@@ -12,25 +12,37 @@ const UsageRecord = require('../models/UsageRecord');
 router.post('/findBus', async (req, res) => {
     try {
         const { from, to } = req.body;
-        const route = await Route.findOne({ from: new RegExp(`^${from}$`, 'i'), to: new RegExp(`^${to}$`, 'i') });
-        if (!route) return res.json({ results: [] });
-        const buses = await Bus.find({ route: route._id }).populate('route');
-        const results = buses.map(bus => ({ bus: bus.busNumber, from: bus.route.from, to: bus.route.to, time: bus.departureTime }));
-        res.json(results);
+        // Use case-insensitive matching for EXACT names
+        const route = await Route.findOne({
+            from: new RegExp(`^${from}$`, 'i'),
+            to: new RegExp(`^${to}$`, 'i')
+        });
+
+        if (!route) {
+            // Explicitly send null for routeDetails if no route is found
+            return res.json({ results: [], routeDetails: null });
+        }
+
+        const buses = await Bus.find({ route: route._id });
+        const results = buses.map(bus => ({
+            bus: bus.busNumber,
+            time: bus.departureTime
+        }));
+
+        // Send back route details including coordinates
+        res.json({ results: results, routeDetails: route });
+
     } catch (error) {
+        console.error("Error in /findBus route:", error);
         res.status(500).json({ message: 'Server error' });
     }
 });
 
 // --- ADMIN: ROUTE MANAGEMENT ---
 router.get('/routes', async (req, res) => {
-    try {
-        const routes = await Route.find();
-        res.json(routes);
-    }
+    try { const routes = await Route.find(); res.json(routes); }
     catch (err) { res.status(500).json({ message: err.message }); }
 });
-// ... (the rest of your routes for post, put, delete routes/buses)
 router.post('/routes', async (req, res) => {
     const route = new Route(req.body);
     try { const newRoute = await route.save(); res.status(201).json(newRoute); }
@@ -44,6 +56,8 @@ router.delete('/routes/:id', async (req, res) => {
     try { await Route.findByIdAndDelete(req.params.id); res.json({ message: 'Route deleted' }); }
     catch (err) { res.status(500).json({ message: err.message }); }
 });
+
+// --- ADMIN: BUS MANAGEMENT ---
 router.get('/buses', async (req, res) => {
     try { const buses = await Bus.find().populate('route'); res.json(buses); }
     catch (err) { res.status(500).json({ message: err.message }); }
@@ -62,8 +76,7 @@ router.delete('/buses/:id', async (req, res) => {
     catch (err) { res.status(500).json({ message: err.message }); }
 });
 
-
-// --- ADMIN: USER MANAGEMENT ---
+// --- ADMIN: USER MANAGEMENT (Combines User & Pass Info) ---
 router.get('/users', async (req, res) => {
     try {
         const listUsersResult = await admin.auth().listUsers();
@@ -76,16 +89,16 @@ router.get('/users', async (req, res) => {
                     displayName: userRecord.displayName || 'N/A',
                     passStatus: pass ? 'active' : 'deactivated',
                     passExpiry: pass ? pass.expiryDate : 'N/A',
+                    passType: pass ? pass.passType : 'N/A'
                 };
             })
         );
         res.json(enrichedUsers);
-    } catch (error) { 
+    } catch (error) {
         console.error('Error listing users:', error);
         res.status(500).json({ message: 'Error retrieving users', error: error.message });
     }
 });
-// ... (the rest of your user management routes)
 router.put('/users/:uid', async (req, res) => {
     const { uid } = req.params;
     const { displayName } = req.body;
@@ -108,8 +121,24 @@ router.delete('/users/:uid', async (req, res) => {
     }
 });
 
+// --- ADMIN: USER PASS HISTORY ---
+router.get('/passes/user/:uid', async (req, res) => {
+    try {
+        const { uid } = req.params;
+        const userRecord = await admin.auth().getUser(uid);
+        const userPasses = await Pass.find({ userId: uid }).sort({ createdAt: -1 });
+        res.json({
+            userName: userRecord.displayName || userRecord.email,
+            userEmail: userRecord.email,
+            passes: userPasses,
+        });
+    } catch (error) {
+        console.error('Error fetching passes for user:', error);
+        res.status(500).json({ message: 'Server error while fetching user pass data.' });
+    }
+});
+
 // --- USER-FACING: PASS MANAGEMENT ---
-// ... (your my-pass, purchase, and delete pass routes)
 router.get('/passes/my-pass/:uid', async (req, res) => {
     try {
         const { uid } = req.params;
@@ -117,30 +146,23 @@ router.get('/passes/my-pass/:uid', async (req, res) => {
         if (!pass) {
             return res.status(404).json({ message: 'No active pass found for this user.' });
         }
-        const today = new Date();
-        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-        const usageRecords = await UsageRecord.find({ passId: pass._id, date: { $gte: startOfMonth, $lte: endOfMonth } });
-        const usedDays = new Set(usageRecords.map(record => record.date.getDate()));
-        const daysInMonth = endOfMonth.getDate();
-        const calendarDays = [];
-        for (let i = 1; i <= daysInMonth; i++) {
-            const dayDate = new Date(today.getFullYear(), today.getMonth(), i);
-            let usedStatus = null;
-            if (dayDate <= today) {
-                usedStatus = usedDays.has(i);
-            }
-            calendarDays.push({ day: i, used: usedStatus });
-        }
-        res.json({ passDetails: pass, calendarDays: calendarDays });
+        const usageRecords = await UsageRecord.find({
+            passId: pass._id,
+            date: { $gte: pass.startDate, $lte: pass.expiryDate }
+        });
+        res.json({
+            passDetails: pass,
+            usageRecords: usageRecords
+        });
     } catch (error) {
         console.error('Error fetching user pass:', error);
         res.status(500).json({ message: 'Server error while fetching pass data.' });
     }
 });
+
 router.post('/passes/purchase', async (req, res) => {
-    const { userId, routeId, passType, startDate } = req.body;
-    if (!userId || !routeId || !passType || !startDate) {
+    const { userId, routeId, passType } = req.body;
+    if (!userId || !routeId || !passType) {
         return res.status(400).json({ message: 'All fields are required.' });
     }
     try {
@@ -152,7 +174,7 @@ router.post('/passes/purchase', async (req, res) => {
         if (!route) {
             return res.status(404).json({ message: 'Selected route not found.' });
         }
-        const passStartDate = new Date(startDate);
+        const passStartDate = new Date();
         const expiryDate = new Date(passStartDate);
         if (passType === 'monthly') {
             expiryDate.setDate(passStartDate.getDate() + 30);
@@ -163,7 +185,7 @@ router.post('/passes/purchase', async (req, res) => {
         }
         const newPass = new Pass({
             userId: userId,
-            passCode: `SS-${passType.slice(0,3).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
+            passCode: `SS-${passType.slice(0, 3).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`,
             passType: passType,
             startDate: passStartDate,
             expiryDate: expiryDate,
@@ -178,6 +200,7 @@ router.post('/passes/purchase', async (req, res) => {
         res.status(500).json({ message: 'Server error during pass purchase.' });
     }
 });
+
 router.delete('/passes/delete/:passId', async (req, res) => {
     try {
         const { passId } = req.params;
@@ -193,5 +216,28 @@ router.delete('/passes/delete/:passId', async (req, res) => {
     }
 });
 
-module.exports = router;
+router.post('/passes/usage', async (req, res) => {
+    const { passId } = req.body;
+    if (!passId) {
+        return res.status(400).json({ message: 'Pass ID is required.' });
+    }
+    try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const existingRecord = await UsageRecord.findOne({ passId: passId, date: today });
+        if (existingRecord) {
+            return res.status(409).json({ message: 'Already checked in for today.' });
+        }
+        await new UsageRecord({ passId: passId, date: today, used: true }).save();
+        const updatedUsageRecords = await UsageRecord.find({ passId: passId });
+        res.status(201).json({
+            message: 'Check-in successful!',
+            usageRecords: updatedUsageRecords
+        });
+    } catch (error) {
+        console.error('Error logging pass usage:', error);
+        res.status(500).json({ message: 'Server error during check-in.' });
+    }
+});
 
+module.exports = router;

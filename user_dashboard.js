@@ -36,51 +36,33 @@ const populateRoutesDropdown = async () => {
     }
 };
 
-const handlePassPurchase = async (userId) => {
+const handlePassPurchase = () => {
     const routeSelect = document.getElementById('route-select');
     const passTypeSelect = document.getElementById('pass-type-select');
-    const startDateSelect = document.getElementById('start-date-select');
     const messageDiv = document.getElementById('purchase-message');
 
-    if (!routeSelect.value || !passTypeSelect.value || !startDateSelect.value) {
-        messageDiv.textContent = 'Please fill out all fields.';
+    if (!routeSelect.value || !passTypeSelect.value) {
+        messageDiv.textContent = 'Please select a route and pass type.';
         messageDiv.style.color = 'red';
         return;
     }
 
-    try {
-        const response = await fetch('http://localhost:5000/api/passes/purchase', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                userId: userId,
-                routeId: routeSelect.value,
-                passType: passTypeSelect.value,
-                startDate: startDateSelect.value
-            }),
-        });
+    // Get the display text of the selected route
+    const selectedRouteText = routeSelect.options[routeSelect.selectedIndex].text;
 
-        const data = await response.json();
+    // Save the user's choices to the browser's temporary storage
+    sessionStorage.setItem('passType', passTypeSelect.value);
+    sessionStorage.setItem('routeId', routeSelect.value);
+    sessionStorage.setItem('routeName', selectedRouteText);
 
-        if (response.ok) {
-            messageDiv.textContent = 'Pass purchased successfully! Go to "My Pass" to view.';
-            messageDiv.style.color = 'green';
-        } else {
-            messageDiv.textContent = `Error: ${data.message}`;
-            messageDiv.style.color = 'red';
-        }
-    } catch (error) {
-        console.error('Purchase error:', error);
-        messageDiv.textContent = 'An error occurred. Please try again later.';
-        messageDiv.style.color = 'red';
-    }
+    // Redirect to the fake payment page
+    window.location.href = 'payment.html';
 };
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        document.getElementById('start-date-select').value = new Date().toISOString().split('T')[0];
         populateRoutesDropdown();
-        document.getElementById('purchase-pass-btn').addEventListener('click', () => handlePassPurchase(user.uid));
+        document.getElementById('purchase-pass-btn').addEventListener('click', handlePassPurchase);
     } else {
         window.location.href = 'login.html';
     }

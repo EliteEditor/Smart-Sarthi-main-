@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>User Pass History</title>
+    <link rel="stylesheet" href="admin.css">
+    <style>
+        .page-header { display: flex; justify-content: space-between; align-items: center; }
+        .back-link { font-size: 16px; text-decoration: none; color: #2563eb; font-weight: 600; }
+        .pass-card { background: white; border-radius: 8px; padding: 20px; margin-top: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 5px solid #ccc; }
+        .pass-card.active { border-left-color: #22c55e; } /* Green */
+        .pass-card.expired { border-left-color: #ef4444; } /* Red */
+        .pass-card p { margin: 5px 0; color: #333; }
+        .pass-card strong { color: #111; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2 class="logo">Smart Sarthi</h2>
+            <nav class="nav">
+                <ul>
+                    <li><a href="admin_dashboard.html">Dashboard</a></li>
+                    <li><a href="admin_bus.html">Buses & Staff</a></li>
+                    <li><a href="user_admin.html">Users</a></li>
+                    <!-- Add other links as needed -->
+                </ul>
+            </nav>
+            <button class="logout-button">Log Out</button>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1 id="user-name-header">Loading...</h1>
+                    <p id="user-email-header">Pass history</p>
+                </div>
+                <a href="user_admin.html" class="back-link">← Back to User List</a>
+            </div>
+
+            <div id="pass-list-container">
+                <!-- Pass cards will be generated here -->
+            </div>
+        </main>
+    </div>
+
+    <script src="auth.js" type="module"></script>
+    <script src="admin_user_passes.js" type="module"></script>
+</body>
+</html>

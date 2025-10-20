@@ -107,6 +107,83 @@ const seedDatabase = async () => {
     console.log('MongoDB connection closed.');
   }
 };
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+// Import the models
+const Route = require('./models/Route');
+const Bus = require('./models/Bus');
+
+const sampleRoutes = [
+    { 
+        from: "Nashik Road", to: "CBS", distance: "12 km", duration: "30 mins",
+        fromCoords: { lat: 19.9622, lng: 73.8346 }, // Nashik Road Station approx. coords
+        toCoords: { lat: 19.9985, lng: 73.7807 }   // CBS approx. coords
+    },
+    { 
+        from: "CBS", to: "Gangapur Road", distance: "8 km", duration: "25 mins",
+        fromCoords: { lat: 19.9985, lng: 73.7807 },
+        toCoords: { lat: 20.0076, lng: 73.7501 }   // Gangapur Road approx. coords
+    },
+    { 
+        from: "Gangapur Road", to: "College Road", distance: "5 km", duration: "15 mins",
+        fromCoords: { lat: 20.0076, lng: 73.7501 },
+        toCoords: { lat: 20.0090, lng: 73.7635 }   // College Road approx. coords
+    },
+    // --- ADDED NASHIK TO PUNE ---
+    {
+        from: "Nashik", to: "Pune", distance: "210 km", duration: "4 hours",
+        fromCoords: { lat: 19.9975, lng: 73.7898 }, // Nashik City approx. coords
+        toCoords: { lat: 18.5204, lng: 73.8567 }   // Pune City approx. coords
+    }
+];
+
+const seedDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI);
+        console.log("✅ Database connected for seeding.");
+
+        await Route.deleteMany({});
+        await Bus.deleteMany({});
+        console.log("🧹 Cleared existing routes and buses.");
+
+        const createdRoutes = await Route.insertMany(sampleRoutes);
+        console.log("🌱 Seeded sample routes with coordinates.");
+
+        // Find routes to assign buses
+        const nashikToCbsRoute = createdRoutes.find(r => r.from === "Nashik Road" && r.to === "CBS");
+        const nashikToPuneRoute = createdRoutes.find(r => r.from === "Nashik" && r.to === "Pune");
+        
+        const sampleBuses = [];
+        if (nashikToCbsRoute) {
+            sampleBuses.push(
+                { busNumber: "MH-15-AB-1234", route: nashikToCbsRoute._id, departureTime: "09:00 AM" },
+                { busNumber: "MH-15-CD-5678", route: nashikToCbsRoute._id, departureTime: "09:30 AM" }
+            );
+        }
+        if (nashikToPuneRoute) {
+             sampleBuses.push(
+                { busNumber: "MH-12-XY-9999", route: nashikToPuneRoute._id, departureTime: "07:00 AM" }
+             );
+        }
+        // Add buses for other routes if needed...
+
+        if (sampleBuses.length > 0) {
+             await Bus.insertMany(sampleBuses);
+             console.log("🌱 Seeded sample buses.");
+        }
+        
+        console.log("✅ Database seeding complete!");
+
+    } catch (error) {
+        console.error("❌ Error seeding database:", error);
+    } finally {
+        mongoose.connection.close();
+        console.log("🔌 Database connection closed.");
+    }
+};
+
+seedDB();
 
 // Run the seeder function
 seedDatabase();

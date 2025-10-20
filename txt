@@ -1,1 +1,0 @@
-mongodb+srv://Editor:<db_password>@smartsarthidb.9qs2d1j.mongodb.net/?retryWrites=true&w=majority&appName=SmartSarthiDB

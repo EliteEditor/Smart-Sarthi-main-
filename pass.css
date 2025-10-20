@@ -241,3 +241,36 @@
   cursor: pointer;
   margin-left: 10px;
 }
+.view-btn {
+  background-color: #3b82f6; /* A different blue */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.check-in-btn {
+  background-color: #16a34a; /* A strong green */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.check-in-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+.logout-button {
+   background-color: #0056ff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+}

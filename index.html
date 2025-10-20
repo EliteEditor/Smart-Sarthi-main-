@@ -3,78 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smarth Sarthi</title>
+    <title>Smart Sarthi</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Add styles for the map container */
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+        #bus-results {
+            text-align: left;
+        }
+        .error-message {
+            background-color: #fee2e2;
+            color: #b91c1c;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <header>
         <section>
             <div class="top">
-        <span>📞 Emergency: 108</span>
-        <span>Helpline: 1800-XXX-XXXX</span>
-       </div>
-        <div class="top">
-            🌟 Real-time tracking available
-        </div>
+                <span>📞 Emergency: 108</span>
+                <span>Helpline: 1800-XXX-XXXX</span>
+            </div>
+            <div class="top">
+                🌟 Real-time tracking available
+            </div>
         </section>
         <section>
             <div class="topbar">
-            <div>
-                <span><img height="80" src="logo.png" alt="logo" >SMART SARTHI</span>
-            </div>
-            <div>
-                <a href="">Route Map</a>
-                <a href="">Timetable</a>
-                <a href="">Live Track</a>
-                <a href="">Book Now</a>
-            </div>
-            <div>
-                <select>
-                    <option>English</option>
-                    <option>Marathi</option>
-                    <option>Hindi</option>
-                </select>
-                <button><a href="login.html">Log In</a></button>
-            </div>
+                <div>
+                    <span><img height="80" src="logo.png" alt="logo" >SMART SARTHI</span>
+                </div>
+                <div>
+                    <a href="">Route Map</a>
+                    <a href="">Timetable</a>
+                    <a href="">Live Track</a>
+                    <a href="">Book Now</a>
+                </div>
+                <div>
+                    <select>
+                        <option>English</option>
+                        <option>Marathi</option>
+                        <option>Hindi</option>
+                    </select>
+                    <button><a href="login.html">Log In</a></button>
+                </div>
             </div>
         </section>
     </header>
     <main>
         <section>
            <h1><big>Welcome to <span class="gradient-text">Smart Sarthi</span></big></h1>
-
             <pre>Intelligent, safe, and convenient public transportation for everyone. 
             Plan your journey, book tickets, and travel with smart technology.
             </pre>
             <div class="features">
                 <span class="green" >Real-Time Tracking</span>
                 <span class="blue">Digital payement</span>
-                <span class="violet">Al Powered Routes</span>
+                <span class="violet">AI Powered Routes</span>
             </div>
         </section>
         <section>
-            <!-- Ensure the form has this exact ID -->
             <form id="journey-planner-form">
                 <div class="planner">
                     <b>Smart Journey Planner</b>
                     <p>Plan your smart route with real time information</p>
                 </div>
                 <div class="inner-planner">
-                    <!-- Ensure the inputs have these exact IDs -->
                     <input id="from-location" type="text" placeholder="Enter pickup location" required>
                     <input id="to-location" type="text" placeholder="Enter destination" required>
                     <input id="journey-date" type="date" required>
-                    <!-- <input id="journey-time" type="time"> -->
                     <button type="submit" class="find-btn">🔍 Find Routes</button>
                 </div>
             </form>
-            <!-- This container is where the results will be displayed -->
-            <div id="bus-results"></div>
+
+            <!-- Map and Results Container - Initially Hidden -->
+            <div id="map-and-results" style="max-width: 850px; margin: 20px auto; display: none;">
+                 <div id="map"></div>
+                 <div id="bus-results"></div>
+            </div>
+             <!-- Container for inline error messages -->
+            <div id="error-container" style="max-width: 850px; margin: 20px auto;"></div>
         </section>
     </main>
-    <footer>
 
-    </footer>
-    <script src="script.js"></script>
+    <script>
+        let map;
+        let directionsService;
+        let directionsRenderer;
+
+        function initMap() {
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                polylineOptions: {
+                    strokeColor: '#2563eb', // Blue route line
+                    strokeWeight: 5
+                }
+            });
+            
+            const nashik = { lat: 19.9975, lng: 73.7898 };
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: nashik,
+            });
+            directionsRenderer.setMap(map);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('journey-date').value = new Date().toISOString().split('T')[0];
+            const journeyForm = document.getElementById('journey-planner-form');
+
+            journeyForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const from = document.getElementById('from-location').value;
+                const to = document.getElementById('to-location').value;
+                const resultsContainer = document.getElementById('bus-results');
+                const mapAndResultsContainer = document.getElementById('map-and-results');
+                const errorContainer = document.getElementById('error-container');
+
+                // Reset state on new search
+                mapAndResultsContainer.style.display = 'none';
+                errorContainer.innerHTML = '';
+                resultsContainer.innerHTML = '<p>Searching...</p>';
+                mapAndResultsContainer.style.display = 'block';
+
+                try {
+                    const response = await fetch('http://localhost:5000/api/findBus', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ from, to })
+                    });
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    const data = await response.json();
+
+                    resultsContainer.innerHTML = '';
+
+                    if (data.routeDetails) {
+                        const request = {
+                            origin: data.routeDetails.from,
+                            destination: data.routeDetails.to,
+                            travelMode: 'DRIVING'
+                        };
+                        directionsService.route(request, (result, status) => {
+                            if (status == 'OK') {
+                                directionsRenderer.setDirections(result);
+                            } else {
+                                console.error('Directions request failed due to ' + status);
+                                resultsContainer.innerHTML = '<p>Note: Could not draw the route path on the map.</p>';
+                            }
+                        });
+
+                        if (data.results && data.results.length > 0) {
+                            resultsContainer.innerHTML = '<h3>Available Buses:</h3>';
+                            data.results.forEach(bus => {
+                                const busCard = document.createElement('div');
+                                busCard.className = 'bus-card';
+                                busCard.innerHTML = `<h4>Bus Number: ${bus.bus}</h4><p><strong>Departure Time:</strong> ${bus.time}</p>`;
+                                resultsContainer.appendChild(busCard);
+                            });
+                        } else {
+                            resultsContainer.innerHTML = '<h3>Available Buses:</h3><p>Sorry, no buses are currently scheduled for this route.</p>';
+                        }
+                    } else {
+                        mapAndResultsContainer.style.display = 'none';
+                        errorContainer.innerHTML = `<div class="error-message">No direct route found for the locations you entered.</div>`;
+                    }
+
+                } catch (error) {
+                    console.error('Error fetching bus routes:', error);
+                    mapAndResultsContainer.style.display = 'none';
+                    errorContainer.innerHTML = `<div class="error-message">An error occurred while searching. Please try again later.</div>`;
+                }
+            });
+        });
+    </script>
+    <!-- IMPORTANT: Your Google Maps API Key is already in the file you provided -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAap1KpNz5-bt800qMk7gVD6G4zVH1WQ-k&callback=initMap"></script>
 </body>
 </html>

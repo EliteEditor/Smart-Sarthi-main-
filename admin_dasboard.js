@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- API Functions ---
 
-    // 1. Fetch and display all routes
     const fetchRoutes = async () => {
         try {
             const response = await fetch(API_URL);
@@ -60,21 +59,28 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (error) {
             console.error('Error fetching routes:', error);
-            routeTableBody.innerHTML = `<tr><td colspan="5">Could not load routes. Check console for errors.</td></tr>`;
+            routeTableBody.innerHTML = `<tr><td colspan="5">Could not load routes.</td></tr>`;
         }
     };
 
-    // 2. Handle form submission (Create/Update)
+    // Handle form submission (Create/Update)
     routeForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const id = document.getElementById('route-id').value;
+        
+        // --- THIS IS THE FIX ---
+        // We now include placeholder coordinates to satisfy the database model.
+        // In a real app, you might use a Geocoding API here to find real coordinates.
         const routeData = {
             from: document.getElementById('from-location').value,
             to: document.getElementById('to-location').value,
             distance: document.getElementById('distance').value,
             duration: document.getElementById('duration').value,
+            fromCoords: { lat: 0, lng: 0 }, // Placeholder
+            toCoords: { lat: 0, lng: 0 }     // Placeholder
         };
+        // -------------------------
 
         const method = id ? 'PUT' : 'POST';
         const url = id ? `${API_URL}/${id}` : API_URL;
@@ -88,28 +94,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(`Failed to save route. Server says: ${errorData.message || 'Unknown error'}`);
+                throw new Error(`Failed to save route: ${errorData.message || 'Unknown error'}`);
             }
 
             closeModal();
-            fetchRoutes();
+            fetchRoutes(); // Refresh the table with the new data
         } catch (error) {
             console.error('Error saving route:', error);
-            alert('Could not save the route. Please check the console for more details.');
+            alert('Could not save the route. Check the console for details.');
         }
     });
 
-    // 3. Handle Edit and Delete button clicks
+    // Handle Edit and Delete button clicks
     routeTableBody.addEventListener('click', async (event) => {
         const target = event.target;
         const id = target.dataset.id;
 
         if (target.classList.contains('edit-btn') && id) {
             try {
-                const response = await fetch(`${API_URL}/${id}`);
-                if (!response.ok) throw new Error('Could not fetch route details for editing.');
-                const routeToEdit = await response.json();
-                openModal("Edit Route", routeToEdit);
+                // Fetch all routes and find the one to edit
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error('Could not fetch routes for editing.');
+                const routes = await response.json();
+                const routeToEdit = routes.find(route => route._id === id);
+                if (routeToEdit) {
+                    openModal("Edit Route", routeToEdit);
+                } else {
+                    throw new Error('Route not found');
+                }
             } catch (error) {
                 console.error('Error preparing edit:', error);
                 alert('Could not load route details for editing.');
@@ -129,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-
-    // Initial fetch of routes when the page loads
+    
+    // Initial data load
     fetchRoutes();
 });

@@ -1,0 +1,9 @@
+[the maps start working when we replace fromcoords to from ]
+google maps api key:AIzaSyAap1KpNz5-bt800qMk7gVD6G4zVH1WQ-k
+mongodb+srv://Editor:<db_password>@smartsarthidb.9qs2d1j.mongodb.net/?retryWrites=true&w=majority&appName=SmartSarthiDB
+updated(20 october 2025):
+1.Added a fake payment page.
+2.added functionality sign in with google.
+3.fixed search user functionality.
+4.Added user pass info functionality in admin dashboard.
+5.added map on the main page.
