@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin - Route Management</title>
-  <link rel="stylesheet" href="/public/styles/admin.css">
+  <title>Admin Dashboard - Bus & Staff</title>
+  <link rel="stylesheet" href="admin_bus.css" />
   <style>
-    /* Basic Modal Styles */
+    /* Re-using modal styles for consistency */
     .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
-    .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border-radius: 8px; width: 80%; max-width: 500px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-    .modal-header { background-color:rgb(10, 10, 241) flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border-radius: 8px; width: 80%; max-width: 550px; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; }
     .close-btn { color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
-    .close-btn:hover { color: #000; }
-    .modal-form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-    .modal-form input { padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
-    .modal-form .form-actions { text-align: right; }
+    .modal-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+    .modal-form input, .modal-form select { padding: 10px; border-radius: 5px; border: 1px solid #ccc; width: 100%; }
+    .form-actions { grid-column: 1 / -1; text-align: right; }
     .modal-form button { padding: 10px 15px; border-radius: 5px; border: none; color: white; cursor: pointer; }
     .save-btn { background-color: #2563eb; }
     .cancel-btn { background-color: #6b7280; margin-left: 10px; }
@@ -24,7 +23,7 @@
   <div class="container">
     <aside class="sidebar">
       <h2 class="logo">Smart Sarthi</h2>
-      <nav class="nav">
+      <nav>
         <ul>
           <li><a href="admin_dashboard.html">Dashboard</a></li>
           <li><a href="admin_bus.html">Buses & Staff</a></li>
@@ -34,6 +33,14 @@
         </ul>
       </nav>
       <button class="logout-button">Log Out</button>
+        </aside>
+        <main class="main-content">
+            <header class="topbar">
+                <div class="user-info">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-role">Administrator</span>
+                </div>
+            </header>
     </aside>
 
     <main class="main-content">
@@ -47,24 +54,24 @@
       <section class="section">
         <div class="section-header">
           <div>
-            <h1>Route Management</h1>
-            <p>Manage all bus routes and their operational status</p>
+            <h1>Bus & Staff Management</h1>
+            <p>Manage bus fleet and staff assignments</p>
           </div>
-          <button class="add-btn" id="add-route-btn">+ Add New Route</button>
+          <button class="add-btn blue" id="add-bus-btn">➕ Add New Bus</button>
         </div>
 
         <div class="table-wrapper">
           <table>
             <thead>
               <tr>
-                <th>From</th>
-                <th>To</th>
-                <th>Distance</th>
-                <th>Duration</th>
+                <th>Bus Number</th>
+                <th>Assigned Route</th>
+                <th>Departure Time</th>
+                <th>Driver Name</th>
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody id="route-table-body">
+            <tbody id="bus-table-body">
               </tbody>
           </table>
         </div>
@@ -72,27 +79,28 @@
     </main>
   </div>
 
-  <div id="route-modal" class="modal">
+  <div id="bus-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 id="modal-title">Add New Route</h2>
+        <h2 id="modal-title">Add New Bus</h2>
         <span class="close-btn">&times;</span>
       </div>
-      <form id="route-form" class="modal-form">
-        <input type="hidden" id="route-id">
-        <input type="text" id="from-location" placeholder="From Location" required>
-        <input type="text" id="to-location" placeholder="To Location" required>
-        <input type="text" id="distance" placeholder="Distance (e.g., 12 km)" required>
-        <input type="text" id="duration" placeholder="Duration (e.g., 45 mins)" required>
+      <form id="bus-form" class="modal-form">
+        <input type="hidden" id="bus-id">
+        <input type="text" id="busNumber" placeholder="Bus Number (e.g., MH-15-XX-1234)" required>
+        <select id="route" required>
+          <option value="">Select a Route</option>
+          </select>
+        <input type="text" id="departureTime" placeholder="Departure Time (e.g., 09:15 AM)" required>
+        <input type="text" id="driverName" placeholder="Driver's Name">
         <div class="form-actions">
-          <button type="submit" class="save-btn">Save Route</button>
+          <button type="submit" class="save-btn">Save Bus</button>
           <button type="button" class="cancel-btn">Cancel</button>
         </div>
       </form>
     </div>
   </div>
-  
-  <script src="/public/scripts/admin_dashboard.js"></script>
-  <script src="/public/scripts/auth.js" type="module"></script>
+
+  <script src="admin_bus.js"></script>
 </body>
 </html>
