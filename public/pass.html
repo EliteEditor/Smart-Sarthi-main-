@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Pass | Smart Sarthi</title>
+  <link rel="stylesheet" href="/public/styles/pass.css">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">Smart Sarthi</div>
+      <nav class="nav">
+        <a href="user_dashboard.html">Dashboard</a>
+        <a href="pass.html" class="active">My Pass</a>
+        <a href="#">Settings</a>
+      </nav>
+      <button class="logout-button">Log Out</button>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <div></div>
+        <div class="user-profile" id="user-name">Loading...</div>
+      </header>
+
+      <section class="pass-section">
+        <div class="pass-card">
+          <h3>Pass Validity</h3>
+          <p class="pass-id" id="pass-id">Loading...</p>
+          <p>Start Date: <strong id="start-date">YYYY-MM-DD</strong></p>
+          <p>Expiry Date: <strong id="expiry-date">YYYY-MM-DD</strong></p>
+          <p>From: <strong id="start-location">Start Location</strong></p>
+          <p>To: <strong id="end-location">End Location</strong></p>
+          <div class="progress-bar">
+            <div class="progress" id="progress-bar" style="width: 0%"></div>
+          </div>
+          <p><strong id="days-remaining">--</strong> remaining</p>
+          <button class="renew-btn">Renew Pass</button>
+          <button class="view-btn" id="view-calendar-btn">View Calendar</button>
+          <button class="check-in-btn" id="check-in-btn">Check-In for Today</button> 
+          <button class="delete-btn" id="delete-pass-btn">Delete Pass</button>
+
+        </div>
+      </section>
+
+      <section class="calendar-section" id="calendar-container" style="display: none;">
+        <h3>Usage Calendar</h3>
+        <div id="usage-calendar">
+          </div>
+      </section>
+    </main>
+  </div>
+  
+  <script src="/public/scripts/auth.js" type="module"></script>
+  <script src="/public/scripts/pass.js" type="module"></script>
+</body>
+</html>

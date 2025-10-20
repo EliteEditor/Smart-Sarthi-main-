@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Smart Sarthi</title>
+  <style>
+    /* General page style */
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #957caf, #8a96ab);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Form container */
+    form {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      width: 350px;
+      text-align: center;
+      height: 600px;
+    }
+
+    /* Header section */
+    header {
+      margin-bottom: 20px;
+    }
+
+    header img {
+      margin-bottom: 10px;
+    }
+
+    header big {
+      display: block;
+      font-size: 22px;
+      color: #6a11cb;
+      margin-bottom: 5px;
+    }
+
+    header b {
+      font-weight: bold;
+    }
+
+    header small,
+    header p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Input section */
+    .inputs {
+      text-align: left;
+      margin-bottom: 15px;
+    }
+
+    .inputs label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .inputs input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    /* Forgot password */
+    .forgotpassword {
+      text-align: right;
+      margin-bottom: 12px;
+    }
+
+    .forgotpassword p {
+      font-size: 13px;
+      color: #2575fc;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    /* Sign in button */
+    .login {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: 0.3s;
+    }
+
+    .login:hover {
+      opacity: 0.9;
+    }
+
+    /* OR text */
+    main p {
+      margin: 8px 0;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Google login button */
+    .google-btn button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #fff;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .google-btn button:hover {
+      border-color: #2575fc;
+      color: #2575fc;
+    }
+
+    /* Signup section */
+    .signup {
+      margin: 15px 0;
+      font-size: 14px;
+    }
+
+    .signup a {
+      color: #0056d2;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* Features section */
+    .features {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #333;
+    }
+
+    .features span {
+      display: inline-block;
+      margin: 6px 5px;
+      padding: 5px 10px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .green {
+      background: #4caf50;
+    }
+
+    .blue {
+      background: #2196f3;
+    }
+
+    .violet {
+      background: #9c27b0;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #777;
+    }
+  </style>
+  <script type="module" src="/public/scripts/login.js" defer></script>
+</head>
+
+<body>
+  <form>
+    <header>
+      <img height="50" src="logo.png" alt="logo">
+      <big><b>Welcome Back</b></big>
+      Sign in to your Smart Sarthi account
+    </header>
+    <main>
+      <div class="inputs">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Enter your Password" required>
+      </div>
+      <div class="forgotpassword">
+        <p>Forgot password?</p>
+
+      </div>
+      <div class="login" id="login">
+        <span>Log In</span>
+      </div>
+
+      <p>OR</p>
+
+      <div class="google-btn">
+        <button type="button">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/800px-Google_%22G%22_logo.svg.png"
+            alt="Google Logo" width="18"> Continue with Google
+        </button>
+      </div>
+
+
+      <div class="signup">
+        <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+      </div>
+
+      <div class="features">
+
+        <!-- <span class="green">Live Tracking</span> -->
+        <!-- <span class="blue">Smart Routes</span> -->
+        <!-- <span class="violet">Easy Booking</span> -->
+      </div>
+
+    </main>
+
+
+  </form>
+  <!--   
+    <footer>
+      <p>© 2024 Laalpari Smart Sarthi. All rights reserved.</p>
+    </footer> -->
+  <script>
+
+    document.querySelector(".signin").addEventListener("click", function () {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (email === "" || password === "") {
+        alert("⚠ Please enter both email and password.");
+        return;
+      }
+
+      // Dummy validation (replace with backend later)
+      if (email === "admin@mail.com" && password === "1234") {
+        alert("✅ Login successful! Redirecting to Admin Dashboard...");
+        window.location.href = "admin_dashboard.html";
+      } else if (email === "user@mail.com" && password === "1234") {
+        alert("✅ Login successful! Redirecting to User Dashboard...");
+        window.location.href = "user_dashboard.html";
+      } else {
+      }
+    });
+
+  </script>
+
+</body>
+
+</html>
