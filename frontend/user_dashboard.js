@@ -17,7 +17,7 @@ const auth = getAuth(app);
 const populateRoutesDropdown = async () => {
     const routeSelect = document.getElementById('route-select');
     try {
-        const response = await fetch('http://localhost:5000/api/routes');
+        const response = await fetch('https://smart-sarthi.onrender.com/api/routes');
         if (!response.ok) {
             throw new Error(`Network response was not ok: ${response.statusText}`);
         }

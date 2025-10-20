@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ADMIN_EMAIL = 'editorbro90@gmail.com';
     const userTableBody = document.getElementById('user-table-body');
     const searchBox = document.querySelector('.search-box'); // Get the search input
-    const API_URL = 'http://localhost:5000/api/users';
+    const API_URL = 'https://smart-sarthi.onrender.com/api/users';
 
     let allUsers = []; // Create a cache to store the full list of users
 

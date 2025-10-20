@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const BUS_API_URL = 'http://localhost:5000/api/buses';
-    const ROUTE_API_URL = 'http://localhost:5000/api/routes';
+    const BUS_API_URL = 'https://smart-sarthi.onrender.com/api/buses';
+    const ROUTE_API_URL = 'https://smart-sarthi.onrender.com/api/routes';
 
     const modal = document.getElementById('bus-modal');
     const addBusBtn = document.getElementById('add-bus-btn');

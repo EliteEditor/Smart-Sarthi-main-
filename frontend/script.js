@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Send the data to your working backend API endpoint
-            const response = await fetch('http://localhost:5000/api/findBus', {
+            const response = await fetch('https://smart-sarthi.onrender.com/api/findBus', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

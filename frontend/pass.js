@@ -92,7 +92,7 @@ const loadPassData = async (uid) => {
     // ... (This entire function has NO changes)
     const mainContent = document.querySelector('.main-content');
     try {
-        const response = await fetch(`http://localhost:5000/api/passes/my-pass/${uid}`);
+        const response = await fetch(`https://smart-sarthi.onrender.com/api/passes/my-pass/${uid}`);
         if (!response.ok) {
             mainContent.innerHTML = '<h2>My Pass</h2><p>You do not have an active pass. Purchase one from the Dashboard.</p>';
             return;
@@ -160,7 +160,7 @@ document.addEventListener('click', async (event) => {
         if (!currentPassId) return;
         if (confirm('Are you sure you want to permanently delete this pass?')) {
             try {
-                const response = await fetch(`http://localhost:5000/api/passes/delete/${currentPassId}`, { method: 'DELETE' });
+                const response = await fetch(`https://smart-sarthi.onrender.com/api/passes/delete/${currentPassId}`, { method: 'DELETE' });
                 if (!response.ok) throw new Error('Failed to delete pass.');
                 alert('Pass deleted successfully.');
                 window.location.reload();
@@ -176,7 +176,7 @@ document.addEventListener('click', async (event) => {
         target.disabled = true;
 
         try {
-            const response = await fetch('http://localhost:5000/api/passes/usage', {
+            const response = await fetch('https://smart-sarthi.onrender.com/api/passes/usage', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ passId: currentPassId })

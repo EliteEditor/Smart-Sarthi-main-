@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_URL = 'http://localhost:5000/api/routes';
+    const API_URL = 'https://smart-sarthi.onrender.com/api/routes';
 
     const modal = document.getElementById('route-modal');
     const addRouteBtn = document.getElementById('add-route-btn');

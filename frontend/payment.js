@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusMessageEl.textContent = 'Processing your trial payment...';
 
                 try {
-                    const response = await fetch('http://localhost:5000/api/passes/purchase', {
+                    const response = await fetch('https://smart-sarthi.onrender.com/api/passes/purchase', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ userId: user.uid, routeId, passType }),
