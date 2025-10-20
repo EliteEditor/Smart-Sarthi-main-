@@ -41,7 +41,7 @@ function setupLogoutButton() {
                 try {
                     await signOut(auth);
                     // After successful logout, redirect to the login page
-                    window.location.href = "login.html";
+                    window.location.href = "index.html";
                 } catch (error) {
                     console.error("Logout Error:", error);
                     alert("Error logging out: " + error.message);
