@@ -7,3 +7,4 @@ updated(20 october 2025):
 3.fixed search user functionality.
 4.Added user pass info functionality in admin dashboard.
 5.added map on the main page.
+6.deployed the website 

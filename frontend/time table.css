@@ -1,0 +1,178 @@
+  /* ===== Basic Reset & Body ===== */
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+
+  body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f8f9fa;
+      /* Light grey background */
+      color: #333;
+  }
+
+  /* --- Branded Navbar --- */
+  .navbar {
+      /* background: white; */
+      color: black;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  .nav-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #17120f;
+  }
+
+  .nav-title img {
+      height: 50px;
+      vertical-align: middle;
+      margin-right: 10px;
+  }
+
+  .nav-link {
+      color: black;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+  }
+
+  .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* --- Page Container --- */
+  .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+  }
+
+  /* --- Title Styling --- */
+  caption {
+      font-size: 1.8rem;
+      font-weight: 600;
+      /* color: #6a11cb; Brand Purple */
+      margin-bottom: 25px;
+      text-align: center;
+      text-transform: uppercase;
+  }
+
+  /* --- Table Wrapper (for mobile scroll) --- */
+  .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      /* Allows horizontal scrolling on small screens */
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      border-radius: 10px;
+      /* Applies to wrapper */
+      overflow: hidden;
+      /* Hides corners */
+  }
+
+  /* --- EDITED HERE --- */
+  /* The background gradient is now on the ROW */
+  thead tr {
+      background: linear-gradient(to right, #3f51b5, #9c27b0);
+      /* Brand Gradient */
+  }
+
+  thead th {
+      /* The background property was REMOVED from here */
+      color: white;
+      padding: 16px 20px;
+      text-align: left;
+      /* Professional left-align */
+      font-size: 15px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #5a0eb5;
+  }
+
+  /* --- END OF EDIT --- */
+
+  /* --- Table Body --- */
+  tbody td {
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 15px;
+      color: #333;
+      border-bottom: 1px solid #eee;
+  }
+
+  tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+      /* Light alternating row color */
+  }
+
+  tbody tr:hover {
+      background-color: #eef6ff;
+      /* Light blue hover */
+  }
+
+  tbody tr:last-child td {
+      border-bottom: none;
+  }
+
+  /* --- Responsive Design --- */
+  @media (max-width: 768px) {
+      body {
+          padding: 0;
+          /* No padding on body for mobile */
+      }
+
+      .navbar {
+          border-radius: 0;
+      }
+
+      .container {
+          padding: 20px 0;
+          /* Padding top/bottom only */
+          margin: 0 auto;
+          border-radius: 0;
+          box-shadow: none;
+          background-color: #f8f9fa;
+          /* Match body background */
+      }
+
+      .table-wrapper {
+          border-radius: 0;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          border: none;
+      }
+
+      thead th,
+      tbody td {
+          padding: 12px 15px;
+          white-space: nowrap;
+          /* Ensures table scrolls cleanly */
+      }
+
+      caption {
+          font-size: 1.3rem;
+          padding: 0 10px;
+          /* Add padding to caption on mobile */
+      }
+  }

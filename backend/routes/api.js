@@ -1,15 +1,109 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
-const cors =require('cors'); // <-- 1. Import the package
-const path = require('path');
-const app = express();
-app.use(cors());
 // Import all necessary models at the top
 const Bus = require('../models/Bus');
 const Route = require('../models/Route');
 const Pass = require('../models/Pass');
 const UsageRecord = require('../models/UsageRecord');
+const BusType = require('../models/BusType');
+const PassengerCategory = require('../models/PassengerCategory');
+
+// --- 1. ENDPOINT FOR DROPDOWNS (cal.js calls /data) ---
+router.get('/data', async (req, res) => {
+    try {
+        const busTypes = await BusType.find();
+        const passengerCategories = await PassengerCategory.find();
+        
+        // Get unique 'from' locations from your Routes
+        const locations = await Route.distinct('from');
+
+        res.json({
+            busTypes: busTypes.map(bt => ({ id: bt._id, name: bt.name })),
+            passengerCategories: passengerCategories.map(pc => ({ id: pc._id, name: pc.name })),
+            locations: locations
+        });
+    } catch (error) {
+        console.error("Error fetching fare data:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+// --- 2. ENDPOINT FOR DISTANCE (cal.js calls /distance) ---
+router.get('/distance', async (req, res) => {
+    try {
+        const { from, to } = req.query;
+        const route = await Route.findOne({ from, to });
+
+        if (!route) {
+            return res.json({ distance: null });
+        }
+
+        // IMPORTANT: This parses "12 km" into the number 12
+        // It's safer to just use route.distance if you updated your DB
+        const distance = parseInt(route.distance);
+        
+        res.json({ distance: distance });
+    } catch (error) {
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+// --- 3. ENDPOINT FOR CALCULATION (cal.js calls /calculate) ---
+router.post('/calculate', async (req, res) => {
+    try {
+        const { from, to, busTypeId, passengerId } = req.body;
+
+        const route = await Route.findOne({ from, to });
+        const busType = await BusType.findById(busTypeId);
+        const category = await PassengerCategory.findById(passengerId);
+
+        if (!route || !busType || !category) {
+            return res.status(404).json({ message: "Data not found. Please check selections." });
+        }
+
+        // Parse the distance (e.g., "12 km" -> 12)
+        const distance = parseInt(route.distance);
+        if (isNaN(distance)) {
+            return res.status(500).json({ message: "Route distance is invalid." });
+        }
+
+        const baseFare = distance * busType.ratePerKm;
+        const discountApplied = baseFare * (category.discountPercent / 100);
+        const finalFare = baseFare - discountApplied;
+
+        // Send back the data in the exact format cal.js expects
+        res.json({
+            distance: distance,
+            busType: busType.name,
+            passengerType: category.name,
+            baseFare: baseFare,
+            discountApplied: discountApplied,
+            finalFare: finalFare,
+            discountMessage: `${category.name} (${category.discountPercent}% discount)`
+        });
+
+    } catch (error) {
+        console.error("Calculation Error:", error);
+        res.status(500).json({ message: "Calculation error" });
+    }
+});
+
+// --- 4. NEW: ENDPOINT FOR DYNAMIC DESTINATIONS ---
+router.get('/destinations', async (req, res) => {
+    try {
+        const { from } = req.query;
+        if (!from) {
+            return res.status(400).json({ message: "A 'from' location is required." });
+        }
+        // Find all routes starting from this location and return the unique 'to' locations
+        const destinations = await Route.distinct('to', { from: from });
+        res.json(destinations);
+    } catch (error) {
+        console.error("Error fetching destinations:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
 
 // --- PUBLIC BUS FINDER ENDPOINT ---
 router.post('/findBus', async (req, res) => {
@@ -147,7 +241,7 @@ router.get('/passes/my-pass/:uid', async (req, res) => {
         const { uid } = req.params;
         const pass = await Pass.findOne({ userId: uid, status: 'active' });
         if (!pass) {
-            return res.status(404).json({ message: 'No active pass found for this user.' });
+            return res.status(444).json({ message: 'No active pass found for this user.' });
         }
         const usageRecords = await UsageRecord.find({
             passId: pass._id,
@@ -242,5 +336,5 @@ router.post('/passes/usage', async (req, res) => {
         res.status(500).json({ message: 'Server error during check-in.' });
     }
 });
-app.use(express.json());
+
 module.exports = router;

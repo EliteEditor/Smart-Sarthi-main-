@@ -9,257 +9,259 @@
     /* General page style */
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #957caf, #8a96ab);
       height: 100vh;
       margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      display: flex; /* Use flexbox for the split layout */
+      justify-content: space-between; /* Distribute space between sections */
+      align-items: stretch; /* Make children fill the height */
+      overflow: hidden; /* Prevent scrolling on body */
     }
 
-    /* Form container */
+    /* Left Section: Image */
+    .image-section {
+      flex: 65; /* Takes 65% of the width */
+      background-image: url('loginpage.png'); /* Your bus image here */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex; /* For centering content if any, otherwise just for flex item behavior */
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Right Section: Login Form Container */
+    .login-section {
+      flex: 35; /* Takes 35% of the width */
+      display: flex; /* Use flexbox to center the form within this section */
+      justify-content: center;
+      align-items: center;
+      background-color: #fff; /* Solid white background for the login section */
+      padding: 20px; /* Some padding around the form */
+      box-sizing: border-box; /* Include padding in the element's total width and height */
+    }
+
+    /* Form specific styles */
     form {
-      background: #fff;
-      padding: 30px;
+      background: #fff; /* Form itself is white, but now contained within login-section */
+      padding: 40px;
       border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      width: 350px;
+      box-shadow: none; /* Remove shadow as it's within a white background */
+      width: 100%;
+      max-width: 400px; /* Limit form width for readability */
       text-align: center;
-      height: 600px;
+      box-sizing: border-box;
     }
 
     /* Header section */
     header {
-      margin-bottom: 20px;
+      margin-bottom: 30px; /* Increased margin */
     }
 
     header img {
-      margin-bottom: 10px;
+      height: 60px; /* Slightly larger logo */
+      margin-bottom: 20px; /* More space below logo */
     }
 
     header big {
       display: block;
-      font-size: 22px;
-      color: #6a11cb;
-      margin-bottom: 5px;
+      font-size: 28px; /* Larger welcome text */
+      color: #6a11cb; /* Matched color from your previous design */
+      margin-bottom: 10px;
+      font-weight: bold; /* Bold as in the screenshot */
     }
 
-    header b {
-      font-weight: bold;
-    }
-
-    header small,
     header p {
-      font-size: 14px;
+      font-size: 16px;
       color: #666;
     }
 
     /* Input section */
     .inputs {
       text-align: left;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     .inputs label {
       display: block;
-      margin-bottom: 6px;
-      font-size: 14px;
-      color: #555;
+      margin-bottom: 8px;
+      font-size: 15px;
+      color: #444;
+      font-weight: 500;
     }
 
     .inputs input {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
+      padding: 12px;
+      border: 1px solid #ddd;
       border-radius: 8px;
-      font-size: 14px;
-      margin-bottom: 12px;
+      font-size: 15px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+    
+    .inputs input:focus {
+        border-color: #6a11cb;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.2);
     }
 
     /* Forgot password */
     .forgotpassword {
       text-align: right;
-      margin-bottom: 12px;
+      margin-bottom: 20px;
     }
 
     .forgotpassword p {
-      font-size: 13px;
+      font-size: 14px;
       color: #2575fc;
       cursor: pointer;
       margin: 0;
+      text-decoration: none;
+      transition: color 0.2s ease-in-out;
+    }
+    .forgotpassword p:hover {
+        color: #004ecc;
     }
 
     /* Sign in button */
     .login {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       border-radius: 8px;
       background: linear-gradient(135deg, #6a11cb, #2575fc);
       color: white;
-      font-size: 15px;
+      font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
-      margin-bottom: 12px;
-      transition: 0.3s;
+      margin-bottom: 20px;
+      transition: background 0.3s ease;
+      border: none;
     }
 
     .login:hover {
-      opacity: 0.9;
+      background: linear-gradient(135deg, #5a0eb5, #1d60dd);
     }
 
     /* OR text */
-    main p {
-      margin: 8px 0;
-      font-size: 14px;
-      color: #666;
+    main > p { /* Target direct child <p> of main */
+      margin: 15px 0;
+      font-size: 15px;
+      color: #888;
     }
 
-    /* Google login button */
+    /* Google login button / Continue with OTP */
     .google-btn button {
       width: 100%;
       padding: 12px;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       background: #fff;
-      font-size: 14px;
+      font-size: 15px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: border-color 0.3s ease, color 0.3s ease;
+      box-sizing: border-box;
     }
 
     .google-btn button:hover {
-      border-color: #2575fc;
-      color: #2575fc;
+      border-color: #6a11cb;
+      color: #6a11cb;
+    }
+    .google-btn button img {
+        height: 20px;
+        width: 20px;
     }
 
     /* Signup section */
     .signup {
-      margin: 15px 0;
-      font-size: 14px;
+      margin: 25px 0 15px;
+      font-size: 15px;
+      color: #666;
     }
 
     .signup a {
-      color: #0056d2;
+      color: #6a11cb;
       font-weight: bold;
       text-decoration: none;
+      transition: color 0.2s ease-in-out;
+    }
+    .signup a:hover {
+        color: #4a0c8e;
+    /* --- EDITED HERE: Removed stray 'S' --- */
     }
 
-    /* Features section */
-    .features {
-      margin-top: 15px;
-      font-size: 13px;
-      color: #333;
-    }
-
-    .features span {
-      display: inline-block;
-      margin: 6px 5px;
-      padding: 5px 10px;
-      border-radius: 12px;
-      color: #fff;
-      font-size: 12px;
-    }
-
-    .green {
-      background: #4caf50;
-    }
-
-    .blue {
-      background: #2196f3;
-    }
-
-    .violet {
-      background: #9c27b0;
-    }
-
-    /* Footer */
-    footer {
-      margin-top: 15px;
-      font-size: 12px;
-      color: #777;
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column; /* Stack vertically on smaller screens */
+      }
+      .image-section {
+        flex: none; /* Remove flex sizing */
+    /* --- EDITED HERE: Removed stray 's' --- */
+        height: 35vh; /* Shorter image section */
+        min-height: 0;
+        width: 100%;
+      }
+      .login-section {
+        flex: none; /* Remove flex sizing */
+        width: 100%;
+        min-width: 0;
+        height: 65vh; /* Taller form section */
+        overflow-y: auto; /* Allow scrolling if form content is too long */
+        padding: 15px;
+      }
+      form {
+        max-width: 90%; /* Adjust form width */
+        margin: auto; /* Center form */
+      }
     }
   </style>
-  <script type="module" src="login.js" defer></script>
-</head>
+  </head>
 
 <body>
-  <form>
-    <header>
-      <img height="50" src="logo.png" alt="logo">
-      <big><b>Welcome Back</b></big>
-      Sign in to your Smart Sarthi account
-    </header>
-    <main>
-      <div class="inputs">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter your email" required>
-        <label for="password">Password</label>
-        <input id="password" type="password" placeholder="Enter your Password" required>
-      </div>
-      <div class="forgotpassword">
-        <p>Forgot password?</p>
+  <div class="image-section">
+    </div>
 
-      </div>
-      <div class="login" id="login">
-        <span>Log In</span>
-      </div>
+  <div class="login-section">
+    <form>
+      <header>
+        <img src="logo.png" alt="logo"> 
+        <big><b>Welcome Back</b></big>
+        <p>Sign in to your Smart Sarthi account</p>
+      </header>
+      <main>
+        <div class="inputs">
+          <label for="email">Email</label> <input type="email" id="email" placeholder="Enter your email" required> <label for="password">Password</label>
+          <input id="password" type="password" placeholder="Enter your Password" required>
+        </div>
+              <div class="forgotpassword">
+                <p>Forgot password?</p>
+              </div>
+              <button type="button" class="login" id="login">
+          <span>Log In</span> </button>
 
-      <p>OR</p>
+        <p>OR</p>
 
-      <div class="google-btn">
-        <button type="button">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/800px-Google_%22G%22_logo.svg.png"
+        <div class="google-btn">
+          <button type="button">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/800px-Google_%22G%22_logo.svg.png"
+
             alt="Google Logo" width="18"> Continue with Google
-        </button>
-      </div>
+          </button>
+        </div>
 
+        <div class="signup">
+          <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+        </div>
+      </main>
+    </form>
+  </div>
 
-      <div class="signup">
-        <p>Don't have an account? <a href="signup.html">Sign up</a></p>
-      </div>
-
-      <div class="features">
-
-        <!-- <span class="green">Live Tracking</span> -->
-        <!-- <span class="blue">Smart Routes</span> -->
-        <!-- <span class="violet">Easy Booking</span> -->
-      </div>
-
-    </main>
-
-
-  </form>
-  <!--   
-    <footer>
-      <p>© 2024 Laalpari Smart Sarthi. All rights reserved.</p>
-    </footer> -->
-  <script>
-
-    document.querySelector(".signin").addEventListener("click", function () {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-
-      if (email === "" || password === "") {
-        alert("⚠ Please enter both email and password.");
-        return;
-      }
-
-      // Dummy validation (replace with backend later)
-      if (email === "admin@mail.com" && password === "1234") {
-        alert("✅ Login successful! Redirecting to Admin Dashboard...");
-        window.location.href = "admin_dashboard.html";
-      } else if (email === "user@mail.com" && password === "1234") {
-        alert("✅ Login successful! Redirecting to User Dashboard...");
-        window.location.href = "user_dashboard.html";
-      } else {
-      }
-    });
-
-  </script>
-
+  <script type="module" src="login.js"></script>
+    
 </body>
 
 </html>

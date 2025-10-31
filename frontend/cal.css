@@ -1,0 +1,515 @@
+/* Reset & base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f8f9fa;
+  color: #222;
+  line-height: 1.6;
+}
+a {
+  text-decoration: none;
+}
+
+/* Hero */
+header.hero {
+  background: linear-gradient(to right, #3f51b5, #9c27b0);
+  color: white;
+  padding: 80px 20px;
+  text-align: center;
+}
+.hero-overlay h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+.hero-overlay p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  border: none; /* Added for <button> tag */
+  font-family: 'Inter', sans-serif; /* Added for <button> tag */
+  font-size: 1rem; /* Added for <button> tag */
+}
+.btn-yellow {
+  background-color: #ffc107;
+  color: #222;
+}
+.btn-yellow:hover {
+  background-color: #e0a800;
+}
+.btn-outline {
+  border: 2px solid white;
+  color: white;
+  background: transparent;
+}
+.btn-outline:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* Section */
+.section {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+.section h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+/* Reduce paragraph space in Passenger Concessions section only */
+.section h2 + p {
+  margin-bottom: 10px; /* Reduced from 30px to 10px */
+  text-align: center;
+}
+
+
+/* === Bus Types Card Grid === */
+.card-grid {
+  display: grid;
+  gap: 24px;
+  justify-content: center; /* center grid horizontally */
+}
+
+.first-row {
+  grid-template-columns: repeat(3, 320px);
+}
+
+.second-row {
+  grid-template-columns: repeat(2, 320px);
+  margin: 0 auto;
+}
+
+/* Card style - fixed width & height */
+.card-grid .card {
+  width: 320px;
+  min-height: 260px;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: default;
+}
+
+
+/* Hover effect */
+.card-grid .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* Responsive bus cards grid */
+@media (max-width: 1024px) {
+  .first-row,
+  .second-row {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    width: 100%;
+  }
+  .card-grid .card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .first-row,
+  .second-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === Full-width Passenger Concessions Table === */
+.table-wrapper {
+  width: 100vw; /* full viewport width */
+  margin-left: calc(-50vw + 50%);
+  padding: 0 20px;
+  overflow-x: auto;
+  margin-top: 30px;
+  box-sizing: border-box;
+}
+
+table {
+  width: 100%;
+  min-width: 1000px;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+table th,
+table td {
+  padding: 14px 20px;
+  text-align: left;
+  border-bottom: 1px solid #eaeaea;
+}
+
+table thead {
+  
+  background: linear-gradient(to right, #3f51b5, #9c27b0);
+  color: white;
+  font-weight: 600;
+}
+
+table tbody tr:hover {
+  background-color: #f4f4f4;
+}
+
+/* Responsive table */
+@media (max-width: 600px) {
+  table {
+    min-width: unset;
+  }
+}
+
+/* Price text inside bus cards */
+.card-grid .card .price {
+  font-weight: bold;
+  color: #43aa5b !important; /* green */
+}
+
+
+.note {
+  font-size: 0.9rem;
+  color: #666;
+}
+/* Target only the 'Passenger Concessions' section */
+.section:nth-of-type(2) {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.section:nth-of-type(2) p {
+  margin-bottom: 0;
+}
+
+/* Reduce margin on table wrapper */
+.table-wrapper {
+  margin-top: 10px !important;
+}
+/* === Fare Calculation Section === */
+.fare-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1280px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+}
+
+.fare-card {
+  background: white;
+  padding: 20px;
+ 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.fare-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.fare-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.subtext {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.discount {
+  font-size: 0.95rem;
+  margin: 5px 0;
+}
+
+.final {
+  font-size: 1.05rem;
+  font-weight: bold;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 10px 0;
+}
+
+
+/* Color Helpers */
+.green {
+  color: #2e7d32;
+}
+
+.red {
+  color: #b71c1c;
+}
+
+.blue {
+  color: #1a237e;
+}
+
+/* Responsive Grid */
+@media (max-width: 1024px) {
+  .fare-card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+/* =====================================================
+--- STYLES FOR THE SLIDE-IN CALCULATOR PANEL ---
+=====================================================
+*/
+
+/* --- Panel Overlay and Container --- */
+.overlay-hidden {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+
+.slide-in-panel {
+  position: fixed;
+  top: 0;
+  right: -1000px; /* Start off-screen */
+  width: 90%;
+  max-width: 900px; 
+  height: 100%;
+  background-color: #F8F9FA; /* Panel background */
+  z-index: 100;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  transition: right 0.4s ease-in-out;
+  overflow-y: auto;
+  display: flex; /* This creates the 2-column layout */
+  font-family: 'Inter', sans-serif; /* Use Inter font inside panel */
+}
+
+.slide-in-panel.open {
+  right: 0;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  left: 20px; /* Moved to left for better layout */
+  font-size: 30px;
+  font-weight: bold;
+  color: #888;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+.close-btn:hover {
+  color: #333;
+}
+
+/* --- Panel Content Layout --- */
+.slide-in-panel .fare-calculator,
+.slide-in-panel .fare-estimate {
+  flex: 1;
+  padding: 30px;
+  padding-top: 70px; /* Add space for close button */
+  height: 100%;
+  overflow-y: auto;
+}
+
+.slide-in-panel .fare-calculator {
+  flex-basis: 60%;
+  background: #FFFFFF;
+  border-right: 1px solid #E0E0E0;
+}
+.slide-in-panel .fare-estimate {
+  flex-basis: 40%;
+}
+
+.slide-in-panel h1 { font-size: 28px; }
+.slide-in-panel h2 { font-size: 22px; margin-bottom: 8px; }
+.slide-in-panel p { color: #5A6D70; margin-bottom: 20px; }
+
+/* --- Panel Form Styles --- */
+.slide-in-panel .form-group {
+    margin-bottom: 20px;
+}
+.slide-in-panel .form-group label {
+    font-family: 'Inter', sans-serif; /* Override page font */
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+.slide-in-panel .form-group label i {
+    margin-right: 8px;
+    color: #9C27B0;
+}
+.slide-in-panel .form-group select,
+.slide-in-panel .form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    background-color: #FDFDFD;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.slide-in-panel .form-group select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%235A6D70' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+}
+.slide-in-panel .form-group input[readonly] {
+    background-color: #F8F9FA;
+    color: #5A6D70;
+    cursor: not-allowed;
+}
+
+.slide-in-panel .calculate-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: #0056ff; /* Your blue color */
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.slide-in-panel .calculate-btn:hover {
+    background-color: #0044cc;
+}
+
+/* --- Panel Estimate Styles --- */
+.slide-in-panel .estimate-card {
+    background: linear-gradient(to right, #3f51b5, #9c27b0); /* Your gradient */
+    color: #FFFFFF;
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.slide-in-panel .estimate-card p {
+    color: #E3F2FD;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+.slide-in-panel .estimate-card h3 {
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.slide-in-panel .breakdown-card {
+    background: #FFFFFF;
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid #E0E0E0;
+    margin-bottom: 20px;
+}
+.slide-in-panel .breakdown-card h3 i {
+    color: #9C27B0;
+    margin-right: 8px;
+}
+.slide-in-panel .breakdown-list {
+    list-style: none;
+    margin-top: 20px;
+}
+.slide-in-panel .breakdown-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px dashed #E0E0E0;
+}
+.slide-in-panel .breakdown-list li:last-child {
+    border-bottom: none;
+}
+.slide-in-panel .breakdown-list li span {
+    color: #5A6D70;
+}
+.slide-in-panel .breakdown-list li strong {
+    font-weight: 600;
+}
+.slide-in-panel .breakdown-list li .discount-value {
+    color: #2E7D32;
+}
+.slide-in-panel .breakdown-list li.final-fare {
+    padding-top: 20px;
+    font-size: 18px;
+}
+.slide-in-panel .breakdown-list li.final-fare span,
+.slide-in-panel .breakdown-list li.final-fare strong {
+    color: #1E3539;
+}
+
+/* --- Panel Info Box Styles --- */
+.slide-in-panel .info-box {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-family: 'Inter', sans-serif;
+}
+.slide-in-panel .info-box i {
+    font-size: 20px;
+    margin-top: 2px;
+}
+.slide-in-panel .info-box p {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+.slide-in-panel .info-box strong {
+    font-size: 15px;
+}
+.slide-in-panel .info-box.warning {
+    background-color: #FFF8E1;
+    border-left: 4px solid #FFB300;
+}
+.slide-in-panel .info-box.warning i { color: #FFB300; }
+.slide-in-panel .info-box.success {
+    background-color: #E8F5E9;
+    border-left: 4px solid #2E7D32;
+}
+.slide-in-panel .info-box.success i { color: #2E7D32; }
+.slide-in-panel .info-box.note {
+    background-color: #E3F2FD;
+    border-left: 4px solid #0D47A1;
+}
+.slide-in-panel .info-box.note i { color: #0D47A1; }

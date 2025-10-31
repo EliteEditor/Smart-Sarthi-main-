@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MSRTC Fare & Concession</title>
+    <link rel="stylesheet" href="cal.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="hero">
+        <div class="hero-overlay">
+            <h1>MSRTC Fare & Concession Guide</h1>
+            <p>Understand your travel costs and available discounts before you ride</p>
+            <div class="hero-buttons">
+                <button id="show-calculator-btn" class="btn btn-yellow">🚍 Check Fare Calculator</button>
+            </div>
+        </div>
+    </header>
+    <br>
+
+    <section class="section">
+        <h2>Bus Types & Fare Structure</h2>
+        <p>Choose from our range of bus services, from economical ordinary buses to premium electric AC coaches</p>
+        <br>
+
+        <div class="card-grid first-row">
+            <div class="card bus-card">
+                <h3>🚌 Ordinary Bus</h3>
+                <p class="note">Non-AC, basic seater</p>
+                <p class="price">₹ 1.00/km (Base fare)</p>
+                <p class="note">Most economical. Full concessions apply.</p>
+            </div>
+            <div class="card bus-card">
+                <h3>🪑 Hirkani (Semi-Luxury)</h3>
+                <p class="note">Non-AC, push-back seats, USB charging</p>
+                <p class="price">₹ 1.25/km (~25% higher)</p>
+                <p class="note">Concessions apply. Mid-tier option.</p>
+            </div>
+            <div class="card bus-card">
+                <h3>❄️ Shivshahi (AC)</h3>
+                <p class="note">AC, higher speed, sleeper/seater</p>
+                <p class="price">₹ 1.40 - 1.60/km</p>
+                <p class="note">Premium comfort. Some concessions reduced.</p>
+            </div>
+        </div>
+        <br>
+        <div class="card-grid second-row">
+            <div class="card bus-card">
+                <h3>🚎 Shivneri (Volvo AC)</h3>
+                <p class="note">Premium Volvo AC for intercity</p>
+                <p class="price">₹ 2.00+/km (Mumbai–Pune)</p>
+                <p class="note">Limited concessions, but applicable.</p>
+            </div>
+            <div class="card bus-card">
+                <h3>⚡ E-Shivneri (Electric AC)</h3>
+                <p class="note">Electric AC buses</p>
+                <p class="price">₹ Variable pricing</p>
+                <p class="note">Fares fixed by the state, subject to change.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Passenger Concessions</h2>
+        <p>Comprehensive discount structure for various passenger categories</p>
+    </section>
+    <br>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Passenger Type</th>
+                    <th>Concession</th>
+                    <th>Applicable Bus Types</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Women</td>
+                    <td>50% off</td>
+                    <td>All MSRTC bus types</td>
+                    <td>Under Mahila Samman Yojana. Valid photo ID required.</td>
+                </tr>
+                <tr>
+                    <td>Senior Citizens (75+)</td>
+                    <td>100% free</td>
+                    <td>All MSRTC bus types</td>
+                    <td>Must show valid age proof (e.g., Aadhaar).</td>
+                </tr>
+                <tr>
+                    <td>Senior Citizens (65–75)</td>
+                    <td>50% off</td>
+                    <td>All MSRTC bus types</td>
+                    <td>Valid age ID required.</td>
+                </tr>
+                <tr>
+                    <td>Children (5–12)</td>
+                    <td>50% off</td>
+                    <td>Ordinary, Express, Semi-Luxury</td>
+                    <td>Under 5: Free, no seat.</td>
+                </tr>
+                <tr>
+                    <td>Physically Handicapped</td>
+                    <td>Free travel</td>
+                    <td>Ordinary, Express</td>
+                    <td>40%+ disability. On premium: 30% for self, 55% for assistant.</td>
+                </tr>
+                <tr>
+                    <td>Students</td>
+                    <td>Up to 66.67% off</td>
+                    <td>Ordinary, Express (pass only)</td>
+                    <td>Institutional proof required.</td>
+                </tr>
+                <tr>
+                    <td>Advance Booking (150+ km)</td>
+                    <td>15% off</td>
+                    <td>All buses</td>
+                    <td>Non-peak season only. Not combinable with other discounts.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <section class="section">
+        <h2>Example Fare Calculations</h2>
+        <p>See how discounts are applied in real-world scenarios</p>
+
+        <div class="fare-card-grid">
+            <div class="fare-card">
+                <div class="fare-icon">👩‍🦰</div>
+                <h3 class="title red">Adult Woman</h3>
+                <p class="subtext">Hirkani • 200 km</p>
+                <hr>
+                <p><strong>Base Fare:</strong> ₹250</p>
+                <p class="discount green">50% off (Mahila Samman)</p>
+                <hr>
+                <p class="final"><strong>Final Fare:</strong> <span class="blue">₹125</span></p>
+            </div>
+            <div class="fare-card">
+                <div class="fare-icon">🧓</div>
+                <h3 class="title red">Senior Citizen (Age 76)</h3>
+                <p class="subtext">Shivneri • 200 km</p>
+                <hr>
+                <p><strong>Base Fare:</strong> ₹400</p>
+                <p class="discount green">100% off</p>
+                <hr>
+                <p class="final"><strong>Final Fare:</strong> <span class="blue">₹0 (Free)</span></p>
+            </div>
+            <div class="fare-card">
+                <div class="fare-icon">🧒</div>
+                <h3 class="title red">Child (Age 6)</h3>
+                <p class="subtext">Semi-Luxury • 200 km</p>
+                <hr>
+                <p><strong>Base Fare:</strong> ₹250</p>
+                <p class="discount green">50% off</p>
+                <hr>
+                <p class="final"><strong>Final Fare:</strong> <span class="blue">₹125</span></p>
+            </div>
+            <div class="fare-card">
+                <div class="fare-icon">♿</div>
+                <h3 class="title red">Disabled + Assistant</h3>
+                <p class="subtext">Shivshahi • 200 km</p>
+                <hr>
+                <p><strong>Base Fare:</strong> ₹600 (2 tickets)</p>
+                <p class="discount green">30% + 55%</p>
+                <hr>
+                <p class="final"><strong>Final Fare:</strong> <span class="blue">₹225</span></p>
+            </div>
+        </div>
+    </section>
+
+    <div id="calculator-overlay" class="overlay-hidden"></div>
+
+    <div id="calculator-panel" class="slide-in-panel">
+        <button id="close-calculator-btn" class="close-btn">&times;</button>
+
+        <main class="fare-calculator">
+            <h1>Trip Details</h1>
+            <p>Enter your journey information</p>
+
+            <form id="fare-form">
+                <div class="form-group">
+                    <label for="from-location"><i class="fa-solid fa-map-marker-alt"></i> From</label>
+                    <select id="from-location" name="from" required>
+                        <option value="">Select starting location</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="to-location"><i class="fa-solid fa-route"></i> To</label>
+                    <select id="to-location" name="to" required>
+                        <option value="">Select destination</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="distance">Distance (km)</label>
+                    <input type="text" id="distance" name="distance" placeholder="Auto-calculated" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="bus-type"><i class="fa-solid fa-bus"></i> Bus Type</label>
+                    <select id="bus-type" name="busTypeId" required>
+                        <option value="">Select bus type</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="passenger-category"><i class="fa-solid fa-user"></i> Passenger Category</label>
+                    <select id="passenger-category" name="passengerId" required>
+                        <option value="">Select category</option>
+                    </select>
+                </div>
+
+                <div class="info-box warning">
+                    <i class="fa-solid fa-tags"></i>
+                    <div>
+                        <strong>Advance Booking (15% off)</strong>
+                        <p>Only valid for distances over 150 km. Cannot combine with other discounts.</p>
+                    </div>
+                </div>
+
+                <button type="submit" class="calculate-btn">Calculate Fare</button>
+            </form>
+        </main>
+
+        <aside class="fare-estimate">
+            <h2><i class="fa-solid fa-receipt"></i> Fare Estimate</h2>
+            <p>Your calculated fare breakdown</p>
+
+            <div class="estimate-card">
+                <p>Estimated Fare</p>
+                <h3 id="final-fare-display">₹ 0.00</h3>
+            </div>
+
+            <div class="breakdown-card">
+                <h3><i class="fa-solid fa-list-ul"></i> Breakdown</h3>
+                <ul class="breakdown-list">
+                    <li>
+                        <span>Distance</span>
+                        <strong id="breakdown-distance">0 km</strong>
+                    </li>
+                    <li>
+                        <span>Bus Type</span>
+                        <strong id="breakdown-bus-type">N/A</strong>
+                    </li>
+                    <li>
+                        <span>Passenger Type</span>
+                        <strong id="breakdown-passenger-type">N/A</strong>
+                    </li>
+                    <li>
+                        <span>Base Fare</span>
+                        <strong id="breakdown-base-fare">₹0.00</strong>
+                    </li>
+                    <li>
+                        <span>Discount Applied</span>
+                        <strong id="breakdown-discount" class="discount-value">- ₹0.00</strong>
+                    </li>
+                    <li class="final-fare">
+                        <span>Final Fare</span>
+                        <strong id="breakdown-final-fare">₹0.00</strong>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="info-box success" id="discount-message" style="display: none;">
+            </div>
+
+            <div class="info-box note">
+                <i class="fa-solid fa-info-circle"></i>
+                <p><strong>Note:</strong> This is an estimate. Actual fares may vary slightly.</p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- <script src="auth.js" type="module"></script> -->
+    <script src="cal.js" type="module"></script>
+</body>
+
+</html>
