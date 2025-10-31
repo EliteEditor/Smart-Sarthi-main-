@@ -29,8 +29,8 @@ if (showBtn && closeBtn && panel && overlay) {
 
 // ** THE FIX IS HERE **
 // Your server is on port 5000, not 3000.
-const API_URL = 'http://localhost:5000/api';
-// const API_URL = 'https://smart-sarthi.onrender.com/api';
+// const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://smart-sarthi.onrender.com/api';
 
 // Get all the elements for the calculator
 const fromSelect = document.getElementById('from-location');
