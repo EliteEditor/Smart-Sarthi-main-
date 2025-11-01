@@ -25,17 +25,22 @@
             margin-top: 20px;
             text-align: center;
         }
+
+        /* "Weird Gap" Fix: The margins have been removed */
+        .lang-prefix, .lang-suffix {
+            display: inline; 
+        }
     </style>
 </head>
 <body>
     <header>
         <section>
             <div class="top">
-                <span>📞 Emergency: 108</span>
-                <span>Helpline: 1800-XXX-XXXX</span>
+                <span data-key="nav_emergency">📞 Emergency: 108</span>
+                <span data-key="nav_helpline">Helpline: 1800-XXX-XXXX</span>
             </div>
             <div class="top">
-                🌟 Real-time tracking available
+                <span data-key="nav_realtime">🌟 Real-time tracking available</span>
             </div>
         </section>
         <section>
@@ -44,45 +49,51 @@
                     <span><img height="80" src="logo.png" alt="logo" >SMART SARTHI</span>
                 </div>
                 <div>
-                    <a href="cal.html">Fare Guide</a>
-                    <a href="time table.html">Timetable</a>
-                    <a href="">Live Track</a>
-                    <a href="">Book Now</a>
+                    <a href="cal.html" data-key="nav_fare_guide">Fare Guide</a>
+                    <a href="time table.html" data-key="nav_timetable">Timetable</a>
+                    <a href="" data-key="nav_live_track">Live Track</a>
+                    <a href="" data-key="nav_book_now">Book Now</a>
                 </div>
                 <div>
-                    <select>
-                        <option>English</option>
-                        <option>Marathi</option>
-                        <option>Hindi</option>
+                    <select id="language-selector">
+                        <option value="en">English</option>
+                        <option value="mr">Marathi</option>
+                        <option value="hi">Hindi</option>
                     </select>
-                    <button><a href="login.html">Log In</a></button>
+                    <button><a href="login.html" data-key="nav_login">Log In</a></button>
                 </div>
             </div>
         </section>
     </header>
     <main>
         <section>
-           <h1><big>Welcome to <span class="gradient-text">Smart Sarthi</span></big></h1>
-            <pre>Intelligent, safe, and convenient public transportation for everyone. 
+           <!-- MODIFIED H1 TAG FOR WORD ORDER -->
+           <h1><big>
+                <span data-key="welcome_prefix" class="lang-prefix"></span> 
+                <span class="gradient-text">Smart Sarthi</span> 
+                <span data-key="welcome_suffix" class="lang-suffix"></span>
+           </big></h1>
+
+            <pre data-key="welcome_subtitle">Intelligent, safe, and convenient public transportation for everyone. 
             Plan your journey, book tickets, and travel with smart technology.
             </pre>
             <div class="features">
-                <span class="green" >Real-Time Tracking</span>
-                <span class="blue">Digital payement</span>
-                <span class="violet">AI Powered Routes</span>
+                <span class="green" data-key="feature_tracking">Real-Time Tracking</span>
+                <span class="blue" data-key="feature_payment">Digital payement</span>
+                <span class="violet" data-key="feature_routes">AI Powered Routes</span>
             </div>
         </section>
         <section>
             <form id="journey-planner-form">
                 <div class="planner">
-                    <b>Smart Journey Planner</b>
-                    <p>Plan your smart route with real time information</p>
+                    <b data-key="planner_title">Smart Journey Planner</b>
+                    <p data-key="planner_subtitle">Plan your smart route with real time information</p>
                 </div>
                 <div class="inner-planner">
-                    <input id="from-location" type="text" placeholder="Enter pickup location" required>
-                    <input id="to-location" type="text" placeholder="Enter destination" required>
+                    <input id="from-location" type="text" placeholder="Enter pickup location" data-key="placeholder_from" required>
+                    <input id="to-location" type="text" placeholder="Enter destination" data-key="placeholder_to" required>
                     <input id="journey-date" type="date" required>
-                    <button type="submit" class="find-btn">🔍 Find Routes</button>
+                    <button type="submit" class="find-btn" data-key="btn_find_routes">🔍 Find Routes</button>
                 </div>
             </form>
 
@@ -137,6 +148,8 @@
                 mapAndResultsContainer.style.display = 'block';
 
                 try {
+                    // This is your hard-coded production URL.
+                    // For local testing, you might need to change this or use a relative path
                     const response = await fetch('https://smart-sarthi.onrender.com/api/findBus', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -188,5 +201,9 @@
     </script>
     <!-- IMPORTANT: Your Google Maps API Key is already in the file you provided -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAap1KpNz5-bt800qMk7gVD6G4zVH1WQ-k&callback=initMap"></script>
+    
+    <!-- Language Translation Scripts -->
+    <script src="translations.js"></script>
+    <script src="language.js"></script>
 </body>
 </html>
