@@ -180,15 +180,15 @@ tr:not(:last-child) {
 .logout-button {
   width: 100%;
   padding: 12px;
-  background-color: #ef4444; /* A shade of red */
+  background-color: blue; 
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 16px;
-  margin-top: auto; /* Pushes the button to the bottom */
+  margin-top: auto;
 }
 
 .logout-button:hover {
-  background-color: #dc2626; /* A darker shade of red */
+  background-color: blue; 
 }
