@@ -513,3 +513,15 @@ hr {
     border-left: 4px solid #0D47A1;
 }
 .slide-in-panel .info-box.note i { color: #0D47A1; }
+.nav-link {
+      text-align:left; 
+      color: black;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      background-color: #ffc107;
+  }

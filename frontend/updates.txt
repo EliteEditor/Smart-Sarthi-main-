@@ -12,3 +12,4 @@ updated(20 october 2025):
 7.Added Fare Calculator
 8.Added Timetable
 9.Improved Overall UI
+10.Added multilanguage support
