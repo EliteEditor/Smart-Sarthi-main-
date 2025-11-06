@@ -86,8 +86,8 @@ const translations = {
         "nav_login": "लॉग इन करें",
 
         // --- index.html Page ---
-        "welcome_prefix": "",           // Hindi text is empty BEFORE
-        "welcome_suffix": "में आपका स्वागत है", // Hindi text goes AFTER
+        "welcome_prefix": "",           
+        "welcome_suffix": "में आपका स्वागत है", 
         "welcome_subtitle": "सभी के लिए बुद्धिमान, सुरक्षित और सुविधाजनक सार्वजनिक परिवहन। \nअपनी यात्रा की योजना बनाएं, टिकट बुक करें और स्मार्ट तकनीक के साथ यात्रा करें।",
         "feature_tracking": "रीयल-टाइम ट्रैकिंग",
         "feature_payment": "डिजिटल भुगतान",
