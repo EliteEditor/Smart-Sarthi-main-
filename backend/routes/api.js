@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
+const jwt = require('jsonwebtoken'); // 1. IMPORT JWT
+
 // Import all necessary models at the top
 const Bus = require('../models/Bus');
 const Route = require('../models/Route');
@@ -38,9 +40,6 @@ router.get('/distance', async (req, res) => {
         if (!route) {
             return res.json({ distance: null });
         }
-
-        // IMPORTANT: This parses "12 km" into the number 12
-        // It's safer to just use route.distance if you updated your DB
         const distance = parseInt(route.distance);
         
         res.json({ distance: distance });
@@ -62,7 +61,6 @@ router.post('/calculate', async (req, res) => {
             return res.status(404).json({ message: "Data not found. Please check selections." });
         }
 
-        // Parse the distance (e.g., "12 km" -> 12)
         const distance = parseInt(route.distance);
         if (isNaN(distance)) {
             return res.status(500).json({ message: "Route distance is invalid." });
@@ -72,7 +70,6 @@ router.post('/calculate', async (req, res) => {
         const discountApplied = baseFare * (category.discountPercent / 100);
         const finalFare = baseFare - discountApplied;
 
-        // Send back the data in the exact format cal.js expects
         res.json({
             distance: distance,
             busType: busType.name,
@@ -89,14 +86,13 @@ router.post('/calculate', async (req, res) => {
     }
 });
 
-// --- 4. NEW: ENDPOINT FOR DYNAMIC DESTINATIONS ---
+// --- 4. ENDPOINT FOR DYNAMIC DESTINATIONS ---
 router.get('/destinations', async (req, res) => {
     try {
         const { from } = req.query;
         if (!from) {
             return res.status(400).json({ message: "A 'from' location is required." });
         }
-        // Find all routes starting from this location and return the unique 'to' locations
         const destinations = await Route.distinct('to', { from: from });
         res.json(destinations);
     } catch (error) {
@@ -105,18 +101,70 @@ router.get('/destinations', async (req, res) => {
     }
 });
 
+// --- 5. NEW: CHECK-IN ENDPOINT (For Conductor Scanner) ---
+// This new endpoint replaces the old /passes/usage route
+router.post('/check-in', async (req, res) => {
+    console.log("🔹 [1] Request received at /check-in");
+    const { qrToken } = req.body;
+
+    if (!qrToken) {
+        console.log("❌ [Error] No QR token provided");
+        return res.status(400).json({ message: 'QR Token is required.' });
+    }
+
+    try {
+        console.log("🔹 [2] Verifying JWT...");
+        const decoded = jwt.verify(qrToken, process.env.JWT_SECRET);
+        const { passId } = decoded;
+        console.log("✅ [3] JWT Verified. Pass ID:", passId);
+
+        console.log("🔹 [4] Connecting to DB to find Pass...");
+        // --- IT LIKELY FREEZES HERE ---
+        const pass = await Pass.findById(passId);
+        console.log("✅ [5] DB responded. Pass found:", !!pass);
+
+        if (!pass || pass.status !== 'active') {
+            console.log("❌ [Error] Pass is invalid or inactive");
+            return res.status(404).json({ message: 'Pass is not valid or expired.' });
+        }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        console.log("🔹 [6] Checking if already used today...");
+        const existingRecord = await UsageRecord.findOne({ passId: pass._id, date: today });
+
+        if (existingRecord) {
+             console.log("⚠️ [Warning] Pass already used today");
+            return res.status(409).json({ message: 'Pass already used for today.' });
+        }
+
+        console.log("🔹 [7] Creating new usage record...");
+        await new UsageRecord({ passId: pass._id, date: today, used: true }).save();
+        console.log("✅ [8] Usage record saved successfully!");
+
+        res.status(201).json({ 
+            message: `Check-in successful!`,
+            route: `${pass.fromLocation} to ${pass.toLocation}`
+        });
+        console.log("🚀 [9] Response sent to client.");
+
+    } catch (error) {
+        console.error('❌ [CRITICAL ERROR]:', error.message);
+        res.status(401).json({ message: 'Invalid or Expired QR Code.' });
+    }
+});
+
+
 // --- PUBLIC BUS FINDER ENDPOINT ---
 router.post('/findBus', async (req, res) => {
     try {
         const { from, to } = req.body;
-        // Use case-insensitive matching for EXACT names
         const route = await Route.findOne({
             from: new RegExp(`^${from}$`, 'i'),
             to: new RegExp(`^${to}$`, 'i')
         });
 
         if (!route) {
-            // Explicitly send null for routeDetails if no route is found
             return res.json({ results: [], routeDetails: null });
         }
 
@@ -126,7 +174,6 @@ router.post('/findBus', async (req, res) => {
             time: bus.departureTime
         }));
 
-        // Send back route details including coordinates
         res.json({ results: results, routeDetails: route });
 
     } catch (error) {
@@ -219,19 +266,32 @@ router.delete('/users/:uid', async (req, res) => {
 });
 
 // --- ADMIN: USER PASS HISTORY ---
-router.get('/passes/user/:uid', async (req, res) => {
+router.get('/passes/my-pass/:uid', async (req, res) => {
     try {
         const { uid } = req.params;
-        const userRecord = await admin.auth().getUser(uid);
-        const userPasses = await Pass.find({ userId: uid }).sort({ createdAt: -1 });
+        const pass = await Pass.findOne({ userId: uid, status: 'active' });
+        if (!pass) {
+            return res.status(404).json({ message: 'No active pass found for this user.' });
+        }
+        
+        // --- CHANGE THIS SECTION ---
+        // Old code (caused the bug):
+        // const usageRecords = await UsageRecord.find({
+        //     passId: pass._id,
+        //     date: { $gte: pass.startDate, $lte: pass.expiryDate }
+        // });
+
+        // New code (Fixes the bug by ignoring time differences):
+        const usageRecords = await UsageRecord.find({ passId: pass._id });
+        // ---------------------------
+
         res.json({
-            userName: userRecord.displayName || userRecord.email,
-            userEmail: userRecord.email,
-            passes: userPasses,
+            passDetails: pass,
+            usageRecords: usageRecords
         });
     } catch (error) {
-        console.error('Error fetching passes for user:', error);
-        res.status(500).json({ message: 'Server error while fetching user pass data.' });
+        console.error('Error fetching user pass:', error);
+        res.status(500).json({ message: 'Server error while fetching pass data.' });
     }
 });
 
@@ -241,7 +301,7 @@ router.get('/passes/my-pass/:uid', async (req, res) => {
         const { uid } = req.params;
         const pass = await Pass.findOne({ userId: uid, status: 'active' });
         if (!pass) {
-            return res.status(444).json({ message: 'No active pass found for this user.' });
+            return res.status(404).json({ message: 'No active pass found for this user.' });
         }
         const usageRecords = await UsageRecord.find({
             passId: pass._id,
@@ -254,6 +314,42 @@ router.get('/passes/my-pass/:uid', async (req, res) => {
     } catch (error) {
         console.error('Error fetching user pass:', error);
         res.status(500).json({ message: 'Server error while fetching pass data.' });
+    }
+});
+
+// --- NEW: GET QR CODE TOKEN (Refreshes daily at midnight) ---
+router.get('/passes/my-qr-token/:uid', async (req, res) => {
+    try {
+        const { uid } = req.params;
+        const pass = await Pass.findOne({ userId: uid, status: 'active' });
+
+        if (!pass) {
+            return res.status(404).json({ message: 'No active pass found.' });
+        }
+
+        // 1. Get the timestamp for "midnight today"
+        // This ensures the token is identical every time you fetch it today.
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+        const iat = Math.floor(todayStart.getTime() / 1000); // "Issued At" time
+        const exp = iat + (24 * 60 * 60); // Expires exactly 24 hours after midnight
+
+        // 2. Create a stable token for the day
+        const token = jwt.sign(
+            { 
+                passId: pass._id,
+                iat: iat, // Force the issued time to midnight
+                exp: exp  // Force expiry to next midnight
+            }, 
+            process.env.JWT_SECRET
+        );
+
+        // Send the token to the frontend to be rendered as a QR code
+        res.json({ qrToken: token });
+
+    } catch (error) {
+        console.error('Error generating QR token:', error);
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
@@ -313,6 +409,11 @@ router.delete('/passes/delete/:passId', async (req, res) => {
     }
 });
 
+module.exports = router;
+
+// --- THIS ROUTE IS NOW OBSOLETE ---
+// The new '/check-in' endpoint replaces it.
+/*
 router.post('/passes/usage', async (req, res) => {
     const { passId } = req.body;
     if (!passId) {
@@ -336,5 +437,6 @@ router.post('/passes/usage', async (req, res) => {
         res.status(500).json({ message: 'Server error during check-in.' });
     }
 });
+*/
 
 module.exports = router;

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Sarthi | Conductor Scanner</title>
+    <script src="html5-qrcode.min.js"></script>
+    <style>
+        :root {
+            /* Smart Sarthi Brand Colors extracted from your image */
+            --brand-purple-start: #8a63e5;
+            --brand-purple-end: #6f42c1;
+            --brand-bg: #f4f6f9;
+            --brand-text: #333333;
+            --brand-success: #28a745;
+            --brand-danger: #dc3545;
+            --brand-warning: #ffc107;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--brand-bg);
+            color: var(--brand-text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .logo-text {
+            color: var(--brand-purple-end);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: var(--brand-text);
+            font-size: 24px;
+        }
+
+        /* Scanner Viewfinder */
+        #qr-reader {
+            width: 100%;
+            border: none !important;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #eee; /* Placeholder color before camera loads */
+        }
+
+        #qr-reader img {
+             display: none; /* Hides any default error images from the library */
+        }
+
+        /* Status Box */
+        #status {
+            margin-top: 20px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        .scanning { background-color: #eef4ff; color: var(--brand-purple-end); border: 1px solid #dce9ff; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .stopped { background-color: #e9ecef; color: #6c757d; }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            transition: opacity 0.2s ease;
+        }
+        button:active { opacity: 0.8; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        #toggle-scan-btn {
+            background-color: var(--brand-danger);
+        }
+
+        /* The main action button matches your "Find Routes" button */
+        #check-in-btn {
+            width: 100%;
+            margin-top: 15px;
+            background: linear-gradient(135deg, var(--brand-purple-start), var(--brand-purple-end));
+            box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3);
+            display: none; /* Hidden initially */
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-text">SMART SARTHI</div>
+    <div class="container">
+        <h1>Conductor Scanner</h1>
+        
+        <div id="qr-reader"></div>
+        
+        <div id="status" class="scanning">Initializing camera...</div>
+        
+        <div class="btn-group">
+            <button id="toggle-scan-btn">Stop Camera</button>
+        </div>
+        <button id="check-in-btn">Confirm Check-In</button>
+    </div>
+
+    <script>
+        // *** IMPORTANT: Ensure this port matches your running backend ***
+        const API_BASE_URL = 'http://localhost:5000/api'; 
+
+        const statusEl = document.getElementById('status');
+        const toggleScanBtn = document.getElementById('toggle-scan-btn');
+        const checkInBtn = document.getElementById('check-in-btn');
+        let html5QrCode = null;
+        let scannedToken = null;
+        let isScanning = false;
+
+        async function toggleScan() {
+            if (isScanning) {
+                if (html5QrCode) {
+                    await html5QrCode.stop();
+                    statusEl.textContent = "Camera Paused";
+                    statusEl.className = 'stopped';
+                    toggleScanBtn.textContent = "Start Camera";
+                    toggleScanBtn.style.backgroundColor = "#28a745"; // Green for start
+                    isScanning = false;
+                }
+            } else {
+                startAutomaticScan();
+            }
+        }
+
+        async function startAutomaticScan() {
+            statusEl.textContent = "Starting camera...";
+            statusEl.className = 'scanning';
+            toggleScanBtn.disabled = true;
+
+            if (!html5QrCode) {
+                html5QrCode = new Html5Qrcode("qr-reader");
+            }
+            const qrConfig = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+            try {
+                // Try back camera first, fall back to any (works for laptops too)
+                try { await html5QrCode.start({ facingMode: "environment" }, qrConfig, onScanSuccess); }
+                catch (err) { await html5QrCode.start({}, qrConfig, onScanSuccess); }
+                
+                statusEl.textContent = "Ready to scan. Point at a pass.";
+                statusEl.className = 'scanning';
+                toggleScanBtn.textContent = "Stop Camera";
+                toggleScanBtn.style.backgroundColor = "#dc3545"; // Reset to red
+                checkInBtn.style.display = 'none';
+                isScanning = true;
+            } catch (err) {
+                console.error(err);
+                statusEl.textContent = "Error: Could not start camera. Check permissions.";
+                statusEl.className = 'error';
+                isScanning = false;
+            } finally {
+                toggleScanBtn.disabled = false;
+            }
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            // Avoid accidental double-scans by stopping immediately
+            if (isScanning) {
+                toggleScan(); 
+                scannedToken = decodedText;
+                statusEl.innerHTML = "✅ Pass detected!<br>Press confirm to check-in.";
+                statusEl.className = 'success';
+                checkInBtn.style.display = 'block'; // Show the branded button
+            }
+        }
+
+        toggleScanBtn.addEventListener('click', toggleScan);
+
+        checkInBtn.addEventListener('click', async () => {
+            if (!scannedToken) return;
+            checkInBtn.disabled = true;
+            checkInBtn.textContent = 'Verifying...';
+            
+            // 5-second timeout controller
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/check-in`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ qrToken: scannedToken }),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                const data = await response.json();
+
+                if (response.ok) {
+                    statusEl.innerHTML = `🎉 <strong>Check-in Successful!</strong><br>${data.route}`;
+                    statusEl.className = 'success';
+                    // Optional: Auto-restart after 3 seconds
+                    // setTimeout(startAutomaticScan, 3000);
+                } else {
+                    statusEl.innerHTML = `⚠️ <strong>Check-in Failed</strong><br>${data.message}`;
+                    statusEl.className = 'error';
+                }
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                     statusEl.innerHTML = '❌ <strong>Timeout</strong><br>Server not responding.';
+                } else {
+                     statusEl.innerHTML = '❌ <strong>Network Error</strong><br>Is the backend running?';
+                }
+                statusEl.className = 'error';
+            } finally {
+                checkInBtn.style.display = 'none';
+                checkInBtn.disabled = false;
+                checkInBtn.textContent = 'Confirm Check-In';
+            }
+        });
+
+        // Start automatically
+        document.addEventListener('DOMContentLoaded', startAutomaticScan);
+    </script>
+</body>
+</html>

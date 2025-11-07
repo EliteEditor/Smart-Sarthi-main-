@@ -5,6 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Pass | Smart Sarthi</title>
   <link rel="stylesheet" href="pass.css">
+  
+  <!-- 1. ADD THE QR CODE LIBRARY -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  
+  <style>
+    /* 2. ADD STYLES FOR THE QR CODE */
+    .qr-code-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 20px;
+        /* This makes it sit next to the pass-card */
+        flex: 1; 
+        min-width: 300px; /* Ensures it doesn't get too squished */
+    }
+    #qrcode {
+        width: 256px;
+        height: 256px;
+        margin: 20px auto 10px;
+    }
+    #qrcode img {
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+    }
+    /* Ensure pass-section can wrap on small screens */
+    .pass-section {
+        display: flex;
+        flex-wrap: wrap; /* Allows wrapping */
+        gap: 20px;
+        margin-top: 30px;
+    }
+    .pass-card {
+        flex: 1; /* Both card and QR code will share space */
+        min-width: 300px; /* Ensures it doesn't get too squished */
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -38,9 +76,18 @@
           <p><strong id="days-remaining">--</strong> remaining</p>
           <button class="renew-btn">Renew Pass</button>
           <button class="view-btn" id="view-calendar-btn">View Calendar</button>
-          <button class="check-in-btn" id="check-in-btn">Check-In for Today</button> 
+          
+          <!-- 3. REMOVED the "Check-In for Today" button -->
+          
           <button class="delete-btn" id="delete-pass-btn">Delete Pass</button>
-
+        </div>
+        
+        <!-- 4. ADD THE QR CODE CONTAINER -->
+        <div class="qr-code-container">
+            <h3>My Digital Pass</h3>
+            <p>Show this to the conductor to check-in.</p>
+            <div id="qrcode"><p>Loading QR Code...</p></div>
+            <p id="qr-message"><small>This code refreshes every 24 hours.</small></p>
         </div>
       </section>
 
@@ -52,6 +99,10 @@
     </main>
   </div>
   
+  <!-- 
+    Your original file had these paths. 
+    Make sure they are correct for your project structure.
+  -->
   <script src="auth.js" type="module"></script>
   <script src="pass.js" type="module"></script>
 </body>

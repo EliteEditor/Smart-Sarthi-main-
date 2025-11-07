@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config();
+require('dotenv').config(); // This line loads your .env file
 
 // --- FIREBASE ADMIN INITIALIZATION ---
 const admin = require('firebase-admin');
@@ -31,5 +31,14 @@ app.use('/api', apiRoutes);
 
 // Start the Server
 app.listen(PORT, () => {
-  console.log(`console.log('--- THE NEW CODE IS RUNNING NOW ---');`);
+  console.log(`Server listening on port ${PORT}`);
+  
+  // --- THIS IS THE NEW DEBUGGING LINE ---
+  // It will show us what value your server is seeing for JWT_SECRET
+  console.log('Checking JWT_SECRET:', process.env.JWT_SECRET);
 });
+app.use(cors({
+    origin: '*', // Allow ANY origin (great for local testing on different ports)
+    methods: ['GET', 'POST', 'DELETE', 'PUT'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
