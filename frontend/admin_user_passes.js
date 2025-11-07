@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchUserPassHistory = async () => {
         try {
+            console.log("Fetching URL:", `https://smart-sarthi.onrender.com/api/passes/user/${userId}`);
             const response = await fetch(`https://smart-sarthi.onrender.com/api/passes/user/${userId}`);
             if (!response.ok) throw new Error('Failed to fetch user data');
             const data = await response.json();
