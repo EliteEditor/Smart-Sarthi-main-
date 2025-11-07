@@ -3,8 +3,8 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 
 // --- THIS IS THE MODIFIED LINE ---
 // We are pointing to your local server (running on port 5000) instead of OnRender
-const API_BASE_URL = 'http://localhost:5000/api';
-// const API_BASE_URL = 'https://smart-sarthi.onrender.com/api'; // This is the old line
+// const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://smart-sarthi.onrender.com/api'; // This is the old line
 
 const firebaseConfig = {
     apiKey: "AIzaSyCcH0GYFUfsl0z2Uv5rgBLvBZhWs3IKepk",
