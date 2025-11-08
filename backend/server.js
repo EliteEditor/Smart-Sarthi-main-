@@ -38,7 +38,13 @@ app.listen(PORT, () => {
   console.log('Checking JWT_SECRET:', process.env.JWT_SECRET);
 });
 app.use(cors({
-    origin: '*', // Allow ANY origin (great for local testing on different ports)
+    // Allow both your local testing and your live scanner
+    origin: [
+        'http://127.0.0.1:5000',
+        'http://localhost:5000',
+        'https://smart-sarthi-scanner.onrender.com' 
+    ],
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
