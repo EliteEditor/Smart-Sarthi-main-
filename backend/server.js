@@ -37,14 +37,11 @@ app.listen(PORT, () => {
   // It will show us what value your server is seeing for JWT_SECRET
   console.log('Checking JWT_SECRET:', process.env.JWT_SECRET);
 });
+// --- IN server.js ---
+
+// REPLACE your current app.use(cors(...)) with EXACTLY this:
 app.use(cors({
-    // Allow both your local testing and your live scanner
-    origin: [
-        'http://127.0.0.1:5000',
-        'http://localhost:5000',
-        'https://smart-sarthi-scanner.onrender.com' 
-    ],
-    methods: ['GET', 'POST', 'DELETE', 'PUT'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    origin: '*',  // Allow ANY website to connect
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
