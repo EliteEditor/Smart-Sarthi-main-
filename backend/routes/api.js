@@ -264,7 +264,37 @@ router.delete('/users/:uid', async (req, res) => {
         res.status(500).json({ message: 'Error deleting user', error: error.message });
     }
 });
+// Pass History
+router.get('/passes/user/:uid', async (req, res) => {
+    try {
+        const { uid } = req.params;
 
+        // 1. Fetch User Details from Firebase (to display name & email in header)
+        let userRecord;
+        try {
+             userRecord = await admin.auth().getUser(uid);
+        } catch (err) {
+            // If user is deleted from Firebase but still has passes in DB
+            userRecord = { displayName: 'Unknown/Deleted User', email: 'N/A' };
+        }
+
+        // 2. Fetch ALL passes for this user (History means ALL, not just active)
+        // We sort by 'createdAt' descending (-1) to show newest first
+        const userPasses = await Pass.find({ userId: uid }).sort({ createdAt: -1 });
+
+        // 3. Send response in the format admin_user_passes.js expects:
+        // { userName: "...", userEmail: "...", passes: [...] }
+        res.json({
+            userName: userRecord.displayName || 'No Name Provided',
+            userEmail: userRecord.email || 'N/A',
+            passes: userPasses
+        });
+
+    } catch (error) {
+        console.error('Error fetching ADMIN pass history:', error);
+        res.status(500).json({ message: 'Server error while fetching history.' });
+    }
+});
 // --- ADMIN: USER PASS HISTORY ---
 router.get('/passes/my-pass/:uid', async (req, res) => {
     try {

@@ -20,8 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchUserPassHistory = async () => {
         try {
-            console.log("Fetching URL:", `https://smart-sarthi.onrender.com/api/passes/user/${userId}`);
-            const response = await fetch(`https://smart-sarthi.onrender.com/api/passes/user/${userId}`);
+            // --- USE LOCALHOST FOR TESTING ---
+            const API_URL = `http://localhost:5000/api/passes/user/${userId}`;
+            // const API_URL = `https://smart-sarthi.onrender.com/api/passes/user/${userId}`; // Uncomment this for production
+
+            console.log("Fetching URL:", API_URL);
+            const response = await fetch(API_URL);
+            
             if (!response.ok) throw new Error('Failed to fetch user data');
             const data = await response.json();
 
@@ -37,7 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create a card for each pass
             data.passes.forEach(pass => {
                 const card = document.createElement('div');
-                card.className = `pass-card ${pass.status}`; // Adds 'active' or 'expired' class for styling
+                // Adds 'active' or 'expired' class for styling
+                card.className = `pass-card ${pass.status}`; 
                 
                 card.innerHTML = `
                     <p><strong>Pass Code:</strong> ${pass.passCode}</p>
