@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const fetchUserPassHistory = async () => {
         try {
             // --- USE LOCALHOST FOR TESTING ---
-            const API_URL = `http://localhost:5000/api/passes/user/${userId}`;
-            // const API_URL = `https://smart-sarthi.onrender.com/api/passes/user/${userId}`; // Uncomment this for production
+            // const API_URL = `http://localhost:5000/api/passes/user/${userId}`;
+            const API_URL = `https://smart-sarthi.onrender.com/api/passes/user/${userId}`; // Uncomment this for production
 
             console.log("Fetching URL:", API_URL);
             const response = await fetch(API_URL);
