@@ -10,6 +10,8 @@ body {
   background: #f1f3f8;
   color: #333;
   line-height: 1.5;
+  position: relative; /* Add this */
+  overflow-x: hidden; /* And add this */
 }
 
 /* ======= Emergency / Top Info Bar ======= */
@@ -83,7 +85,7 @@ header .top {
 
 /* ======= Main Section ======= */
 main {
-  padding: 40px 20px;
+  padding: 0; 
   text-align: center;
 }
 
@@ -136,78 +138,120 @@ main pre {
   background: #9c27b0;
 }
 
-/* ======= Smart Journey Planner Section ======= */
-.planner {
-  margin: 50px auto 0;
-  padding: 20px;
-  max-width: 850px;
-  border-radius: 14px 14px 0 0;
-  background: linear-gradient(to right, #8775d7, #587ff5, #5754ea);
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: middle;
+
+/* ================================================= */
+/* ===  REDBUS-STYLE SEARCH BAR STYLES   ===== */
+/* ================================================= */
+
+/* This targets the planner section to add the padding back */
+.planner-section {
+    padding: 60px 20px; /* More padding to look spacious */
+    background: #f1f3f8; /* Ensure light background */
 }
 
-.planner p {
-  font-size: 14px;
-  font-weight: normal;
-  margin-top: 6px;
+/* Form wrapper to center content */
+#journey-planner-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* Space between bar and button */
 }
 
-/* ======= Planner Inputs (Below Gradient Header) ======= */
-.inner-planner {
-  background: #fff;
-  margin: 0 auto;
-  padding: 24px 30px;
-  max-width: 850px;
-  border-radius: 0 0 14px 14px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 16px;
+/* The main white pill-shaped container */
+.search-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    max-width: 900px;
+    width: 100%;
+    padding: 15px 25px;
+    border-radius: 40px; /* Rounded pill shape */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
-.inner-planner input {
-  flex: 1 1 180px;
-  padding: 14px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fefefe;
-  transition: 0.3s ease;
+/* Each "From", "To", "Date" group */
+.search-input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0 20px;
+    /* Vertical line separator */
+    border-right: 1px solid #eee; 
 }
 
-.inner-planner input:focus {
-  border-color: #26c6da;
-  outline: none;
-  box-shadow: 0 0 4px rgba(38, 198, 218, 0.5);
+.search-input-group:last-child {
+    border-right: none; /* No line on the last item */
 }
 
-/* ======= Find Button ======= */
+.search-input-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+/* Common style for text and date inputs */
+.search-input-group input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    color: #333;
+    padding: 5px 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+/* Fix for date input not showing placeholder */
+.search-input-group input[type="date"] {
+    color: #333; /* Show date color */
+    width: 100%; /* Ensure it fills space */
+}
+.search-input-group input::placeholder {
+    color: #aaa;
+}
+
+/* The swap icon */
+.swap-icon {
+    font-size: 20px;
+    cursor: pointer;
+    color: #555;
+    padding: 0 10px;
+    transition: transform 0.3s ease;
+}
+.swap-icon:hover {
+    transform: rotate(180deg);
+}
+
+/* ======= Redbus-style Search Button ======= */
 .find-btn {
-  background: linear-gradient(to right,#b38af1, #6978e6);
-  color: white;
-  border: none;
-  padding: 14px 24px;
-  font-size: 14px;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s ease;
+ background: linear-gradient(to right, #5f6aaa, #b26abf);
+    color: white;
+    border: none;
+    padding: 16px 50px;
+    font-size: 18px;
+    font-weight: 700; /* Bold text */
+    border-radius: 30px; /* Rounded shape */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(229, 57, 53, 0.3); /* Red shadow */
 }
 
 .find-btn:hover {
-  opacity: 0.9;
+    opacity: 1;
+    transform: translateY(-3px); /* Lift on hover */
+    box-shadow: 0 12px 25px rgba(229, 57, 53, 0.4);
 }
+
+
+/* ======= Bus Results Card (unchanged) ======= */
 #bus-results {
   margin: 20px auto;
   max-width: 850px;
   display: grid;
   gap: 12px;
 }
-
 .bus-card {
   border: 1px solid #eee;
   padding: 14px;
@@ -218,25 +262,885 @@ main pre {
 }
 
 
-/* ======= Responsive ======= */
-@media (max-width: 768px) {
-  .topbar,
-  .inner-planner {
+/* ================================================= */
+/* ===  ZOMATO-STYLE HERO SECTION STYLES   ===== */
+/* ================================================= */
+
+.hero-section {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('main.png');
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
-  }
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
 
-  .inner-planner input,
-  .find-btn {
+.hero-section h1 {
+    color: #ffffff;
+    font-size: 48px;
+}
+
+.hero-section .gradient-text {
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.hero-section pre {
+    color: #f0f0f0;
+    font-size: 18px;
+    max-width: 600px;
+}
+
+.hero-section::after {
+    content: 'Scroll Down 👇';
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translate(-50%, 0);
+    }
+    40% {
+        transform: translate(-50%, -15px);
+    }
+    60% {
+        transform: translate(-50%, -5px);
+    }
+}
+
+/* ================================================= */
+/* ===   "ZOMATO-STYLE" FLOATING SECTION       === */
+/* ================================================= */
+
+/* 1. Remove the card background from the about-section */
+.about-section {
+    background: none; /* Remove white card background */
+    box-shadow: none; /* Remove card shadow */
+    max-width: 1100px; /* Allow it to be a bit wider */
+    margin: 100px auto 80px auto; /* Add more space above it */
+    overflow: visible; /* IMPORTANT: Allow pseudo-elements to show */
+    position: relative; /* IMPORTANT: Required for pseudo-elements */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+/* 2. Add the decorative "blobs" from your design */
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: -50px; /* Position above the section */
+    left: 15%; /* Position to the left */
+    width: 70px;
+    height: 70px;
+    background-color: #e0d9f5; /* Light purple from your design */
+    border-radius: 16px;
+    opacity: 0.7;
+    z-index: -1; /* Send it behind the content */
+    transform: rotate(-15deg);
+}
+
+.about-section::after {
+    content: '';
+    position: absolute;
+    top: -30px; /* Position above the section */
+    right: 15%; /* Position to the right */
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, #ffaf7b, #ff8c00); 
+    border-radius: 50%;
+    opacity: 0.6;
+    z-index: -1; /* Send it behind the content */
+}
+
+.about-image {
+    flex: 1;
+    max-width: 400px;
+    min-width: 300px;
+}
+
+.about-image img {
     width: 100%;
-  }
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12); /* Floating shadow */
+}
 
-  .topbar select,
-  .topbar button {
-    margin-top: 10px;
-  }
+.about-content {
+    flex: 1.2;
+    text-align: left;
+    min-width: 300px;
+}
 
-  .planner {
+.about-content h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.about-content .priority-text {
+    background: linear-gradient(to right, #8775d7, #587ff5, #5754ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+.about-content > p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.stats-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.stat-box {
+    background: #f9f7ff;
+    border-radius: 16px;
+    padding: 30px 25px;
     text-align: center;
-  }
+    flex-grow: 1;
+    min-width: 250px;
+    border: 1px solid #e0d9f5;
+    box-shadow: 0 10px 30px rgba(135, 117, 215, 0.15); /* Floating shadow */
+}
+
+.stat-box .stat-number-violet {
+    font-size: 32px;
+    font-weight: 700;
+    display: block;
+    color: #9c27b0;
+}
+
+.stat-box p {
+    font-size: 14px;
+    color: #555;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+
+/* ================================================= */
+/* ===       "TRUST FEATURES" SECTION        === */
+/* ================================================= */
+.trust-features-section {
+    max-width: 1000px;
+    margin: 60px auto 100px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.trust-features-section h3 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 40px;
+    font-weight: 600;
+}
+
+.trust-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.trust-box {
+    background: linear-gradient(to right, #8775d7, #6478b3, #6362b6);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    font-size: 18px;
+    font-weight: 600;
+    flex: 1;
+    min-width: 200px;
+    max-width: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trust-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+.trust-box span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ================================================= */
+/* ===    "SMART TECHNOLOGY" SECTION STYLES  === */
+/* ================================================= */
+.smart-tech-section {
+    max-width: 800px;
+    margin: 100px auto 60px auto; /* Spacing below the trust boxes */
+    padding: 20px;
+    text-align: center;
+}
+
+.smart-tech-badge {
+    display: inline-block;
+   background: linear-gradient(to right, #3f51b5, #9c27b0);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(255, 126, 95, 0.3);
+}
+
+.smart-tech-section h2 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+    line-height: 1.2;
+}
+
+.smart-tech-section p {
+    font-size: 18px;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ================================================= */
+/* ===      "FEATURE GRID" SECTION STYLES    === */
+/* ================================================= */
+.feature-grid-section {
+    max-width: 1100px; /* Wider to accommodate 4 columns */
+    margin: 60px auto 100px auto; /* Spacing */
+    padding: 20px;
+}
+
+.feature-grid {
+    display: grid;
+    /* This forces 4 columns, each at least 250px or 1 "fraction" of the space */
+    grid-template-columns: repeat(4, minmax(250px, 1fr)); 
+    gap: 30px; /* Space between cards */
+    justify-content: center;
+}
+
+.feature-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #eee;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px; /* For placeholder emojis */
+    color: white; /* For placeholder emojis */
+}
+/* Feature icon colors from previous step */
+.feature-icon.icon-1 { background: linear-gradient(135deg, #ffaf7b, #ff8c00); }
+.feature-icon.icon-2 { background: linear-gradient(135deg, #b2f0a0, #76c893); }
+.feature-icon.icon-3 { background: linear-gradient(135deg, #74b9ff, #0984e3); }
+.feature-icon.icon-4 { background: linear-gradient(135deg, #ff8a8a, #e53935); }
+
+
+.feature-card h4 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.5;
+}
+
+
+/* ================================================= */
+/* ===    "HOW IT WORKS" SECTION STYLES      === */
+/* ================================================= */
+
+.how-it-works-section {
+    max-width: 1200px;
+    margin: 100px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.how-it-works-header {
+    margin-bottom: 60px;
+}
+
+.process-badge {
+    display: inline-block;
+   background: linear-gradient(to right, #3f51b5, #9c27b0);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(164, 145, 239, 0.4);
+}
+
+.how-it-works-header h2 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* New gradient for "Smart Sarthi" in this title */
+.how-it-works-header .multicolor-gradient {
+    background: #333;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+.how-it-works-header p {
+    font-size: 18px;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.process-steps-grid {
+    display: grid;
+    /* This makes 3 columns on desktop, 1 on mobile */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    position: relative;
+}
+
+.process-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: left;
+    border: 1px solid #eee;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-color: rgba(230, 230, 230, 0.7); 
+}
+
+.process-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.step-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Make icons circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: white;
+}
+
+/* Icon-specific gradients from your image */
+.step-icon.icon-1 {
+    background: linear-gradient(135deg, #ffaf7b, #ff8c00);
+}
+.step-icon.icon-2 {
+    background: linear-gradient(135deg, #b2f0a0, #76c893);
+}
+.step-icon.icon-3 {
+    background: linear-gradient(135deg, #74b9ff, #0984e3);
+}
+
+.step-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ddd;
+}
+
+.process-card h4 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.process-card > p { /* Selects the main <p> but not the checklist <p> */
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.step-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.step-checklist li {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+/* ================================================= */
+/* ===    "CALL TO ACTION" SECTION STYLES    === */
+/* ================================================= */
+
+.cta-section {
+    max-width: 800px;
+    margin: 100px auto;
+    padding: 40px 20px;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.cta-section h2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.cta-section p {
+    font-size: 18px;
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    line-height: 1.6;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.cta-btn-primary,
+.cta-btn-secondary {
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.cta-btn-primary {
+    background: linear-gradient(135deg, #ffaf7b, #ff8c00); /* Orange/Yellow gradient */
+    color: white;
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.3);
+}
+
+.cta-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 140, 0, 0.4);
+}
+
+.cta-btn-secondary {
+    background: #fff;
+    color: #ff8c00; /* Orange color */
+    border: 2px solid #ff8c00; /* Orange border */
+}
+
+.cta-btn-secondary:hover {
+    background: #ff8c00;
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+
+/* ================================================= */
+/* ===           FOOTER STYLES             === */
+/* ================================================= */
+footer {
+    background: linear-gradient(135deg, #2c3e50, #4c3b71, #1a2938); /* Dark Blue/Purple Gradient */
+    color: #ccc;
+    padding: 80px 40px 40px 40px;
+    margin-top: 100px; /* Space above the footer */
+}
+
+.footer-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    /* 4 columns: 1.5fr (wider) for the first, 1fr for the rest */
+    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    gap: 40px;
+}
+
+.footer-col {
+    font-size: 15px;
+}
+
+.footer-col h4,
+.footer-col h5 {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+/* Column 1: About */
+.footer-col.about h4 { /* Logo Placeholder */
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+}
+.footer-col.about h5 {
+    font-size: 16px;
+    margin-top: -10px;
+    line-height: 1.3;
+}
+.footer-col.about h5 span {
+    font-size: 14px;
+    color: #aaa;
+    font-weight: 400;
+}
+.footer-col.about p {
+    line-height: 1.7;
+    margin-bottom: 20px;
+    max-width: 350px;
+}
+.footer-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+    color: #fff;
+}
+.footer-stats span {
+    font-weight: 500;
+}
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+.social-icons a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+.social-icons a:hover {
+    background: #ffaf7b;
+    color: #333;
+}
+
+/* Columns 2 & 3: Link Lists */
+.footer-col.links ul {
+    list-style: none;
+    padding: 0;
+}
+.footer-col.links li {
+    margin-bottom: 12px;
+}
+.footer-col.links a {
+    color: #ccc;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+.footer-col.links a:hover {
+    color: #ffaf7b;
+    padding-left: 5px;
+}
+
+/* Column 4: Stay Connected */
+.footer-col.connect .contact-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 25px;
+}
+.footer-col.connect .contact-list li {
+    margin-bottom: 12px;
+    font-weight: 500;
+    color: #fff;
+}
+.footer-col.connect p {
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+.subscribe-form {
+    display: flex;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 300px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.subscribe-form input {
+    flex: 1;
+    border: none;
+    padding: 14px;
+    font-size: 15px;
+    outline: none;
+    color: #333;
+}
+.subscribe-form button {
+    border: none;
+    background: #ffaf7b;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 0 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.subscribe-form button:hover {
+    background: #ff8c00;
+}
+
+
+/* ======= Responsive for ALL Sections ======= */
+@media (max-width: 992px) { /* Tablet */
+    .footer-container {
+        grid-template-columns: 1fr 1fr; /* 2 columns on tablet */
+    }
+    .footer-col.about {
+        grid-column: 1 / -1; /* Make 'about' span full width */
+    }
+
+    .feature-grid {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* ... other responsive rules ... */
+    
+    /* Responsive rules for the search bar */
+    .search-bar-container {
+        flex-direction: column; /* Stack items vertically */
+        border-radius: 20px; /* Less rounded when stacked */
+        padding: 15px;
+        gap: 10px;
+    }
+    .search-input-group {
+        width: 100%;
+        border-right: none; /* Remove vertical lines */
+        border-bottom: 1px solid #eee; /* Add horizontal lines */
+        padding: 15px 10px;
+    }
+    .search-input-group:last-child {
+        border-bottom: none; /* No line on last item */
+    }
+    .search-input-group input[type="date"] {
+        width: 100%; /* Ensure date input fills width */
+    }
+    .swap-icon {
+        transform: rotate(90deg); /* Point down */
+        margin: 5px 0;
+    }
+    
+    .find-btn {
+      width: auto; /* Let the padding define the width */
+    }
+
+    .how-it-works-header h2 {
+        font-size: 32px;
+    }
+    .how-it-works-header p {
+        font-size: 16px;
+    }
+    .process-steps-grid {
+        gap: 20px;
+    }
+
+    .smart-tech-section h2 {
+        font-size: 32px;
+    }
+
+    .smart-tech-section p {
+        font-size: 16px;
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(4, 250px); /* Force 4 columns at 250px each */
+        overflow-x: auto; /* Allow horizontal scrolling */
+        justify-content: flex-start; /* Align cards to the left for scrolling */
+        padding: 10px 0; /* Add padding so shadows/scrollbars look good */
+    }
+
+    .about-section {
+        flex-direction: column;
+        text-align: center;
+        margin: 40px auto;
+        padding: 30px 20px;
+    }
+
+    .about-content {
+        text-align: center;
+    }
+
+    .stats-container {
+        justify-content: center; 
+    }
+
+    .stat-box {
+        min-width: 200px; 
+    }
+
+    .trust-features-section h3 {
+        font-size: 24px;
+        margin-bottom: 30px;
+    }
+
+    .trust-boxes {
+        gap: 15px;
+    }
+
+    .trust-box {
+        flex: 1 1 90%;
+        max-width: 90%;
+        font-size: 16px;
+        padding: 18px 25px;
+    }
+
+    .cta-section h2 {
+        font-size: 28px;
+    }
+    .cta-section p {
+        font-size: 16px;
+    }
+    
+    footer {
+        padding: 60px 20px 30px 20px;
+    }
+    .footer-container {
+        grid-template-columns: 1fr; /* 1 column on mobile */
+    }
+}
+/* ================================================= */
+/* ===   GLOBAL FLOATING SHAPES (ZOMATO-STYLE) === */
+/* ================================================= */
+
+/* 1. Make sure all sections can contain floating shapes */
+.trust-features-section,
+.smart-tech-section,
+.feature-grid-section,
+.how-it-works-section,
+.cta-section {
+    position: relative;
+    overflow: visible;
+    z-index: 1; /* Keep content on top */
+}
+
+/* 2. Shape for Trust Features section */
+.trust-features-section::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    right: -80px; /* Bleed off right */
+    width: 160px;
+    height: 160px;
+    background: #e0d9f5; /* Light purple */
+    border-radius: 40px;
+    opacity: 0.5;
+    transform: translateY(-50%) rotate(30deg);
+}
+
+/* 3. Shape for Smart Tech section */
+.smart-tech-section::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: -50px;
+    left: -70px; /* Bleed off left */
+    width: 180px;
+    height: 180px;
+    background: #ffede5; /* Light orange */
+    border-radius: 50%;
+    opacity: 0.7;
+}
+
+/* 4. Shape for How It Works section */
+.how-it-works-section::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    bottom: 5%;
+    left: 5%;
+    width: 120px;
+    height: 120px;
+    background: #e6f7ff; /* Light blue */
+    border-radius: 30px;
+    opacity: 0.8;
+    transform: rotate(-25deg);
+}
+
+/* 5. Shape for CTA section */
+.cta-section::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: -80px;
+    right: 5%;
+    width: 110px;
+    height: 110px;
+    background: #e0d9f5; /* Light purple */
+    border-radius: 50%;
+    opacity: 0.5;
 }

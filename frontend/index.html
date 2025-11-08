@@ -25,11 +25,6 @@
             margin-top: 20px;
             text-align: center;
         }
-
-        /* "Weird Gap" Fix: The margins have been removed */
-        .lang-prefix, .lang-suffix {
-            display: inline; 
-        }
     </style>
 </head>
 <body>
@@ -39,8 +34,8 @@
                 <span data-key="nav_emergency">📞 Emergency: 108</span>
                 <span data-key="nav_helpline">Helpline: 1800-XXX-XXXX</span>
             </div>
-            <div class="top">
-                <span data-key="nav_realtime">🌟 Real-time tracking available</span>
+            <div class="top" data-key="nav_realtime">
+                🌟 Real-time tracking available
             </div>
         </section>
         <section>
@@ -56,9 +51,9 @@
                 </div>
                 <div>
                     <select id="language-selector">
-                        <option value="en">English</option>
-                        <option value="mr">Marathi</option>
-                        <option value="hi">Hindi</option>
+                      <option value="en">English</option>
+                      <option value="mr">Marathi</option>
+                      <option value="hi">Hindi</option>
                     </select>
                     <button><a href="login.html" data-key="nav_login">Log In</a></button>
                 </div>
@@ -66,48 +61,254 @@
         </section>
     </header>
     <main>
-        <section>
-           <!-- MODIFIED H1 TAG FOR WORD ORDER -->
-           <h1><big>
-                <span data-key="welcome_prefix" class="lang-prefix"></span> 
-                <span class="gradient-text">Smart Sarthi</span> 
-                <span data-key="welcome_suffix" class="lang-suffix"></span>
-           </big></h1>
-
+        
+        <section class="hero-section">
+            <h1><big>
+                <span data-key="welcome_prefix">Welcome to</span> 
+                <span class="gradient-text">Smart Sarthi</span>
+                <span data-key="welcome_suffix"></span>
+            </big></h1>
+            
             <pre data-key="welcome_subtitle">Intelligent, safe, and convenient public transportation for everyone. 
             Plan your journey, book tickets, and travel with smart technology.
             </pre>
             <div class="features">
                 <span class="green" data-key="feature_tracking">Real-Time Tracking</span>
-                <span class="blue" data-key="feature_payment">Digital payement</span>
+                <span class="blue" data-key="feature_payment">Digital Payment</span>
                 <span class="violet" data-key="feature_routes">AI Powered Routes</span>
             </div>
         </section>
-        <section>
+
+        
+        <section class="planner-section">
             <form id="journey-planner-form">
-                <div class="planner">
-                    <b data-key="planner_title">Smart Journey Planner</b>
-                    <p data-key="planner_subtitle">Plan your smart route with real time information</p>
+                <div class="search-bar-container">
+                    
+                    <div class="search-input-group">
+                        <label for="from-location">🚌 FROM</label>
+                        <input id="from-location" type="text" placeholder="Enter pickup location" data-key="placeholder_from" required>
+                    </div>
+                    
+                    <div class="swap-icon">↔️</div>
+                    
+                    <div class="search-input-group">
+                        <label for="to-location">📍 TO</label>
+                        <input id="to-location" type="text" placeholder="Enter destination" data-key="placeholder_to" required>
+                    </div>
+                    
+                    <div class="search-input-group">
+                        <label for="journey-date">📅 DATE</label>
+                        <input id="journey-date" type="date" required>
+                    </div>
+
                 </div>
-                <div class="inner-planner">
-                    <input id="from-location" type="text" placeholder="Enter pickup location" data-key="placeholder_from" required>
-                    <input id="to-location" type="text" placeholder="Enter destination" data-key="placeholder_to" required>
-                    <input id="journey-date" type="date" required>
-                    <button type="submit" class="find-btn" data-key="btn_find_routes">🔍 Find Routes</button>
-                </div>
+                
+                <button type="submit" class="find-btn" data-key="btn_find_routes">🔍 Search Buses</button>
             </form>
 
-            <!-- Map and Results Container - Initially Hidden -->
-            <div id="map-and-results" style="max-width: 850px; margin: 20px auto; display: none;">
+            <div id="map-and-results" style="max-width: 900px; margin: 40px auto; display: none;">
                  <div id="map"></div>
                  <div id="bus-results"></div>
             </div>
-             <!-- Container for inline error messages -->
-            <div id="error-container" style="max-width: 850px; margin: 20px auto;"></div>
+             <div id="error-container" style="max-width: 900px; margin: 20px auto;"></div>
         </section>
+        
+        <section class="about-section">
+            <div class="about-image">
+                <img src="loginpage.png" alt="Stylized MSRTC Bus">
+            </div>
+            <div class="about-content">
+                <h2>Your Journey, Our <span class="priority-text">Priority</span></h2>
+                <p>Experience modern public transportation with real-time tracking, digital payments, and comprehensive route coverage.</p>
+                
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <span class="stat-number-violet">24/7</span>
+                        <p>AI Support</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="trust-features-section">
+            <h3>Trusted by citizens across the city</h3>
+            <div class="trust-boxes">
+                <div class="trust-box">
+                    <span>🛡️ Safety First</span>
+                </div>
+                <div class="trust-box">
+                    <span>✨ User Friendly</span>
+                </div>
+                <div class="trust-box">
+                    <span>💰 Affordable</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="smart-tech-section">
+            <span class="smart-tech-badge">Smart Technology</span>
+            <h2>Experience the <span class="gradient-text">Future of Transport</span></h2>
+            <p>Smart Sarthi leverages cutting-edge technology to provide intelligent, safe, and efficient public transportation solutions for modern cities.</p>
+        </section>
+
+        <section class="feature-grid-section">
+            <div class="feature-grid">
+                
+                <div class="feature-card">
+                    <div class="feature-icon icon-1">📱</div> 
+                    <h4>Mobile Integration</h4>
+                    <p>Seamless mobile app experience with offline ticket storage and push notifications.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon icon-2">💳</div> 
+                    <h4>Digital Payments</h4>
+                    <p>Multiple payment options including UPI, cards, and digital wallets for convenience.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon icon-3">📍</div> 
+                    <h4>Smart Stops</h4>
+                    <p>QR code enabled bus stops with digital displays showing real-time information.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon icon-4">⏰</div> 
+                    <h4>Schedule Optimization</h4>
+                    <p>Dynamic scheduling based on traffic patterns and passenger demand analytics.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="how-it-works-section">
+            <div class="how-it-works-header">
+                <span class="process-badge">Simple Process</span>
+                <h2>How <span class="multicolor-gradient">Smart Sarthi</span> Works</h2>
+                <p>Experience seamless public transportation in just three simple steps. Our intelligent system makes your journey planning effortless and efficient.</p>
+            </div>
+
+            <div class="process-steps-grid">
+                <div class="process-card">
+                    <div class="card-header">
+                        <div class="step-icon icon-1">🔍</div>
+                        <span class="step-number">01</span>
+                    </div>
+                    <h4>Search Route</h4>
+                    <p>Enter your pickup and destination points to find the best available routes with real-time information.</p>
+                    <ul class="step-checklist">
+                        <li>✔️ Smart route suggestions</li>
+                        <li>✔️ Real-time bus locations</li>
+                        <li>✔️ Estimated arrival times</li>
+                        <li>✔️ Multiple route options</li>
+                    </ul>
+                </div>
+
+                <div class="process-card">
+                    <div class="card-header">
+                        <div class="step-icon icon-2">🎫</div>
+                        <span class="step-number">02</span>
+                    </div>
+                    <h4>Book Ticket</h4>
+                    <p>Select your preferred route and time, then book your ticket securely with multiple payment options.</p>
+                    <ul class="step-checklist">
+                        <li>✔️ Secure payment gateway</li>
+                        <li>✔️ Digital ticket generation</li>
+                        <li>✔️ Instant confirmation</li>
+                        <li>✔️ Multiple payment methods</li>
+                    </ul>
+                </div>
+
+                <div class="process-card">
+                    <div class="card-header">
+                        <div class="step-icon icon-3">🚌</div>
+                        <span class="step-number">03</span>
+                    </div>
+                    <h4>Track and Ride Smart</h4>
+                    <p>Track your bus in real-time, receive notifications, and enjoy a comfortable smart journey.</p>
+                    <ul class="step-checklist">
+                        <li>✔️ Live bus tracking</li>
+                        <li>✔️ Push notifications</li>
+                        <li>✔️ QR code boarding</li>
+                        <li>✔️ Journey assistance</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>Ready to Start Your Smart Journey?</h2>
+            <p>Join to Smart Sarthi for daily travel needs.</p>
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn-primary">Plan Your Journey</a>
+                <a href="#" class="cta-btn-secondary">Watch Demo</a>
+            </div>
+        </section>
+
     </main>
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col about">
+                <h4>Smart Sarthi Logo</h4> <h5>Smart Sarthi<br><span>Intelligent Transport</span></h5>
+                <p>Revolutionizing public transportation with smart technology, real-time tracking, and seamless digital experiences for modern cities.</p>
+                <div class="footer-stats">
+                 
+                    <span>🕒 24/7 Service Available</span>
+                    <span>⚡ 99.9% Uptime Guarantee</span>
+                </div>
+                <div class="social-icons">
+                    <a href="#">FB</a> <a href="#">IG</a>
+                    <a href="#">LI</a>
+                    <a href="#">TW</a>
+                </div>
+            </div>
+
+            <div class="footer-col links">
+                <h5>Quick Links</h5>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Route Map</a></li>
+                    <li><a href="#">Time Table</a></li>
+                    <li><a href="#">Live Tracking</a></li>
+                    <li><a href="#">Book Ticket</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col links">
+                <h5>Our Services</h5>
+                <ul>
+                    <li><a href="#">City Bus Service</a></li>
+                    <li><a href="#">Express Routes</a></li>
+                    <li><a href="#">Night Service</a></li>
+                    <li><a href="#">Special Events</a></li>
+                    <li><a href="#">Corporate Booking</a></li>
+                    <li><a href="#">Student Pass</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col connect">
+                <h5>Stay Connected</h5>
+                <ul class="contact-list">
+                    <li data-key="nav_emergency">📞 Emergency: 108</li>
+                    <li data-key="nav_helpline">📞 Helpline: 1800-XXX-XXXX</li>
+                    <li>✉️ support@smartsarthi.com</li>
+                    <li>📍 Smart City Transport Hub</li>
+                </ul>
+                <h5>Get Updates</h5>
+                <p>Subscribe for route updates and service announcements.</p>
+                <form class="subscribe-form">
+                    <input type="email" placeholder="Your email" required>
+                    <button type="submit">→</button>
+                </form>
+            </div>
+        </div>
+    </footer>
+
 
     <script>
+        // ... ALL YOUR JAVASCRIPT ...
         let map;
         let directionsService;
         let directionsRenderer;
@@ -133,6 +334,11 @@
             document.getElementById('journey-date').value = new Date().toISOString().split('T')[0];
             const journeyForm = document.getElementById('journey-planner-form');
 
+            // --- IMPORTANT ---
+            // Your JS will still work because the input IDs
+            // (from-location, to-location, journey-date) are the same.
+            // --- IMPORTANT ---
+
             journeyForm.addEventListener('submit', async function(event) {
                 event.preventDefault();
                 const from = document.getElementById('from-location').value;
@@ -146,11 +352,15 @@
                 errorContainer.innerHTML = '';
                 resultsContainer.innerHTML = '<p>Searching...</p>';
                 mapAndResultsContainer.style.display = 'block';
+                
+                // --- MAP RESIZE FIX ---
+                if (map) {
+                     google.maps.event.trigger(map, 'resize');
+                }
 
                 try {
-                    // This is your hard-coded production URL.
-                    // For local testing, you might need to change this or use a relative path
-                    const response = await fetch('https://smart-sarthi.onrender.com/api/findBus', {
+                    // const response = await fetch('https://smart-sarthi-production.up.railway.app/api/findBus'
+                    const response = await fetch('http://localhost:5000/api/findBus',{
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ from, to })
@@ -199,10 +409,7 @@
             });
         });
     </script>
-    <!-- IMPORTANT: Your Google Maps API Key is already in the file you provided -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAap1KpNz5-bt800qMk7gVD6G4zVH1WQ-k&callback=initMap"></script>
-    
-    <!-- Language Translation Scripts -->
     <script src="translations.js"></script>
     <script src="language.js"></script>
 </body>

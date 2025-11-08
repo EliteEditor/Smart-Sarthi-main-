@@ -14,19 +14,21 @@ admin_user_passes.js
 
 
 updated(20 october 2025):
-1.Added payment page.
-2.added functionality sign in with google.
-3.fixed search user functionality.
-4.Added user pass info functionality in admin dashboard.
-5.added map on the main page.
-6.deployed the website 
-7.Added Fare Calculator
-8.Added Timetable
-9.Improved Overall UI
-10.Added multilanguage support
+1.Added payment page.✅
+2.added functionality sign in with google.✅
+3.fixed search user functionality.✅
+4.Added user pass info functionality in admin dashboard.✅
+5.added map on the main page.✅
+6.deployed the website.✅
+7.Added Fare Calculator.
+8.Added Timetable.
+9.Improved Overall UI.
+10.Added multilanguage support.✅
+11.Added Digital Pass Check-In(QR Code functionality).
+12.Improved the Calendar Logic.✅
 
 Remaining updates:
 staff dashboard : 1. user pass checkin should be visible.
                   2.Assign Buses
 user dashboard  :   1.Notifications of Buses
-                    2.QR code generator
+                    2.QR code generator✅✅
